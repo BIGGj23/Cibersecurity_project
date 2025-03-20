@@ -1,0 +1,264 @@
+/* Reset básico */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background-color: #1A252F; /* Fundo escuro */
+    color: #E5E7EB; /* Texto claro */
+    min-height: 100vh;
+    padding: 20px;
+}
+
+/* Container principal */
+.dashboard-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Header (título e botão) */
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 10px 0;
+    border-bottom: 1px solid #2D3B45; /* Linha sutil para separar */
+}
+
+.dashboard-header h1 {
+    font-size: 24px;
+    color: #E5E7EB;
+}
+
+.create-class-btn {
+    background-color: #2D3B45;
+    color: #E5E7EB;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s;
+}
+
+.create-class-btn:hover {
+    background-color: #3B4A56;
+}
+
+/* Caixinha branca para as abas */
+.tab-container {
+    background-color: #FFFFFF; /* Fundo branco */
+    border-radius: 8px;
+    padding: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra leve */
+    margin-bottom: 20px;
+    text-align: center; /* Centraliza o texto na barra */
+}
+
+/* Menu de abas */
+.tab-menu {
+    display: flex;
+    justify-content: center; /* Centraliza os botões horizontalmente */
+    gap: 10px;
+    background-color: transparent; /* Fundo transparente dentro da caixinha */
+}
+
+/* Botões das abas */
+.tab-button {
+    background-color: #ffffff; /* Fundo escuro (mesma cor do body) */
+    border: 2px solid #2D3B45; /* Borda escura pra destacar como botão */
+    color: #1A252F; /* Texto da cor do fundo pra contraste com o fundo branco da caixinha */
+    font-size: 14px;
+    padding: 8px 20px; /* Mais padding pra parecer botão */
+    border-radius: 4px; /* Bordas arredondadas */
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+    white-space: nowrap; /* Evita que o texto quebre */
+}
+
+.tab-button.active {
+    background-color: #FFFFFF; /* Fundo branco na aba ativa */
+    color: #1A252F; /* Texto escuro na aba ativa */
+    border-color: #1A252F; /* Borda escura na aba ativa */
+    font-weight: bold; /* Destaque visual */
+}
+
+.tab-button:hover {
+    background-color: #2D3B45; /* Efeito hover escuro */
+    color: #E5E7EB; /* Texto claro no hover */
+    border-color: #2D3B45;
+}
+
+/* Conteúdo das abas */
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+/* Lista de turmas (cards) */
+#class-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.class-card {
+    background-color: #FFFFFF;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+}
+
+.class-card:hover {
+    transform: translateY(-5px);
+}
+
+.class-card h2 {
+    font-size: 18px;
+    font-weight: bold;
+    color: #1A252F;
+    margin-bottom: 10px;
+}
+
+.class-card p {
+    font-size: 14px;
+    color: #6B7280;
+    margin-bottom: 5px;
+}
+
+.class-card p strong {
+    color: #1A252F;
+}
+
+/* Detalhes da turma */
+.class-details {
+    background-color: #FFFFFF;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+    display: none;
+}
+
+.class-details.active {
+    display: block;
+}
+
+.class-details h2 {
+    font-size: 18px;
+    font-weight: bold;
+    color: #1A252F;
+    margin-bottom: 10px;
+}
+
+.class-details p {
+    font-size: 14px;
+    color: #6B7280;
+    margin-bottom: 5px;
+}
+
+.class-details p strong {
+    color: #1A252F;
+}
+
+/* Mensagem de boas-vindas */
+.welcome-message {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #FFFFFF;
+    border-radius: 8px;
+    padding: 10px 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.welcome-message p {
+    font-size: 14px;
+    color: #1A252F;
+}
+
+/* Modal */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+}
+
+.modal-content {
+    background-color: #FFFFFF;
+    border-radius: 8px;
+    padding: 20px;
+    width: 400px;
+    max-width: 90%;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 24px;
+    cursor: pointer;
+    color: #6B7280;
+}
+
+.modal-content h2 {
+    font-size: 18px;
+    font-weight: bold;
+    color: #1A252F;
+    margin-bottom: 20px;
+}
+
+.modal-content label {
+    display: block;
+    font-size: 14px;
+    color: #1A252F;
+    margin-bottom: 5px;
+}
+
+.modal-content input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #D1D5DB;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    font-size: 14px;
+}
+
+.btn-primary {
+    background-color: #2D3B45;
+    color: #E5E7EB;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    width: 100%;
+    transition: background-color 0.3s;
+}
+
+.btn-primary:hover {
+    background-color: #3B4A56;
+}

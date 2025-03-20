@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registo Aluno</title>
+    <link rel="stylesheet" href="css/teacher_register.css">
+    <style>
+        .error-message {
+            color: red;
+            font-size: 0.9rem;
+            margin-top: 5px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Registo para aluno -->
+    <div id="registerstudent" class="modal">
+        <div class="modal-content">
+            <!-- Botão para fechar o modal -->
+            <span class="close-button">&times;</span>
+
+            <!-- Título e descrição do formulário -->
+            <h2>Registo Aluno</h2>
+            <p>Cria a conta para começares!</p>
+
+            <!-- Formulário de registo para Aluno -->
+            <form id="registerFormStudent">
+                <label for="fullNameStudent">Full Name</label>
+                <input type="text" id="fullNameStudent" name="fullNameStudent" placeholder="John Doe" required>
+
+                <label for="emailStudent">Email</label>
+                <input type="email" id="emailStudent" name="emailStudent" placeholder="your@email.com" required>
+                <p id="emailError" class="error-message">Invalid email format.</p>
+
+                <label for="passwordStudent">Password</label>
+                <input type="password" id="passwordStudent" name="passwordStudent" required>
+
+                <label for="confirmPasswordStudent">Confirm Password</label>
+                <input type="password" id="confirmPasswordStudent" name="confirmPasswordStudent" required>
+
+                <!-- Campo oculto para definir automaticamente a role como "aluno" -->
+                <input type="hidden" id="roleStudent" name="roleStudent" value="aluno">
+
+                <!-- Mensagem de erro geral -->
+                <p id="errorMessage" class="error-message"></p>
+
+                <!-- Botão para submeter o formulário -->
+                <button type="submit" id="registerStudentBtn" class="btn primary">Register</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Importação do script -->
+    <script src="js/registo_aluno.js"></script>
+</html>

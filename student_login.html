@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Aluno</title>
+    <link rel="stylesheet" href="css/teacher_register.css">
+    <style>
+        .error-message {
+            color: red;
+            font-size: 0.9rem;
+            margin-top: 5px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Login para aluno -->
+    <div id="loginstudent" class="modal">
+        <div class="modal-content">
+            <!-- Botão para fechar o modal -->
+            <span class="close-button">&times;</span>
+
+            <!-- Título e descrição do formulário -->
+            <h2>Login Aluno</h2>
+            <p>Inicie sessão através de uma conta já existente</p>
+
+            <!-- Formulário de login para aluno -->
+            <form id="loginFormStudent">
+                <label for="emailStudent">Email</label>
+                <input type="email" id="emailStudent" name="emailStudent" placeholder="your@email.com" required>
+
+                <label for="passwordStudent">Password</label>
+                <input type="password" id="passwordStudent" name="passwordStudent" required>
+
+                <!-- Campo oculto para definir automaticamente a role como "aluno" -->
+                <input type="hidden" id="roleStudent" name="roleStudent" value="aluno">
+
+                <!-- Mensagem de erro geral -->
+                <p id="errorMessage" class="error-message"></p>
+
+                <!-- Botão para submeter o formulário -->
+                <button type="submit" class="btn primary">Login</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Importação do script -->
+    <script src="js/login_aluno.js"></script>
+</html>

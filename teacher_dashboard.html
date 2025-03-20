@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel do Professor</title>
+    <link rel="stylesheet" href="css/teacher_dashboard.css">
+    <style>
+        .error-message {
+            color: red;
+            font-size: 0.9rem;
+            margin-top: 5px;
+            display: none;
+        }
+        .logout-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 8px 16px;
+            background-color: #ff4d4d;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .logout-btn:hover {
+            background-color: #e60000;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Header com título e botão -->
+        <header class="dashboard-header">
+            <h1>Painel do Professor</h1>
+            <button class="create-class-btn">Criar Nova Turma</button>
+        </header>
+
+        <!-- Caixinha branca para as abas -->
+        <div class="tab-container">
+            <div class="tab-menu">
+                <button class="tab-button active" onclick="showTab('classes')">Turmas</button>
+                <button class="tab-button" onclick="showTab('practice-games')">Jogos</button>
+                <button class="tab-button" onclick="showTab('learning-materials')">Materiais de Aprendizagem</button>
+            </div>
+        </div>
+
+        <!-- Lista de turmas -->
+        <div id="classes" class="tab-content" style="display: block;">
+            <div id="class-list"></div>
+            <div id="classDetailsContainer" class="class-details" style="display: none;">
+                <h2>Detalhes da Turma: <span id="detailClassName"></span></h2>
+                <p><strong>Código:</strong> <span id="selectedClassCode"></span></p>
+                <p><strong>Nº Alunos:</strong> <span id="selectedClassStudents"></span></p>
+                <p><strong>Média Pontuação:</strong> <span id="selectedClassScore"></span>%</p>
+            </div>
+        </div>
+
+        <div id="practice-games" class="tab-content" style="display: none;">
+            <div id="class-list"></div>
+        </div>
+
+        <div id="learning-materials" class="tab-content" style="display: none;">
+            <div id="class-list"></div>
+        </div>
+
+        <!-- Modal-overlay e Modal -->
+        <div class="modal-overlay" onclick="closeCreateClassModal()"></div>
+        <div id="createClassModal" class="modal">
+            <div class="modal-content">
+                <span class="close-button" onclick="closeCreateClassModal()">×</span>
+                <h2>Create New Class</h2>
+                <form id="createClassForm">
+                    <label for="className">Nome da Turma</label>
+                    <input type="text" id="className" name="className" required>
+                    <p id="errorMessage" class="error-message"></p>
+                    <button type="submit" class="btn-primary">Create Class</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/teacher_dashboard.js"></script>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher Registration</title>
+    <link rel="stylesheet" href="css/teacher_register.css">
+    <style>
+        /* Estilo para a mensagem de erro */
+        .error-message {
+            color: red;
+            font-size: 0.9rem;
+            margin-top: 5px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Registo para Teacher -->
+    <div id="registerTeacher" class="modal">
+        <div class="modal-content">
+            <!-- Botão para fechar o modal -->
+            <span class="close-button">&times;</span>
+
+            <!-- Título e descrição do formulário -->
+            <h2>Teacher Registration</h2>
+            <p>Cria a tua conta e começa!</p>
+
+            <!-- Formulário de registro para Teacher -->
+            <form id="registerFormTeacher">
+                <label for="fullNameTeacher">Full Name</label>
+                <input type="text" id="fullNameTeacher" name="fullNameTeacher" placeholder="John Doe" required>
+
+                <label for="emailTeacher">Email</label>
+                <input type="email" id="emailTeacher" name="emailTeacher" placeholder="your@email.com" required>
+                <p id="emailError" class="error-message">Invalid email format.</p>
+
+                <label for="passwordTeacher">Password</label>
+                <input type="password" id="passwordTeacher" name="passwordTeacher" required>
+
+                <label for="confirmPasswordTeacher">Confirm Password</label>
+                <input type="password" id="confirmPasswordTeacher" name="confirmPasswordTeacher" required>
+
+                <!-- Campo oculto para definir automaticamente a role como "professor" -->
+                <input type="hidden" id="roleTeacher" name="roleTeacher" value="professor">
+
+                <!-- Mensagem de erro geral -->
+                <p id="errorMessage" class="error-message"></p>
+
+                <!-- Botão para submeter o formulário -->
+                <button type="submit" class="btn primary">Register</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Importação do script -->
+    <script src="js/registo_professor.js"></script>
+</html>

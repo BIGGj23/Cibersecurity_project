@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard</title>
+    <link rel="stylesheet" href="css/student_dashboard.css">
+    <style>
+        .error-message {
+            color: red;
+            font-size: 0.9rem;
+            margin-top: 5px;
+            display: none;
+        }
+        .logout-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 8px 16px;
+            background-color: #ff4d4d;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .logout-btn:hover {
+            background-color: #e60000;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Header -->
+        <header class="dashboard-header">
+            <h1>Cyber Training Hub</h1>
+            <div class="user-stats">
+                <span class="streak">Streak: 0 🔥</span>
+                <span class="points">Points: 0 ⭐</span>
+                <button class="join-class-btn">Entrar em uma Turma</button>
+            </div>
+        </header>
+
+        <!-- Abas -->
+        <div class="tab-container">
+            <div class="tab-menu">
+                <button class="tab-button active" onclick="showTab('games')">Games</button>
+                <button class="tab-button" onclick="showTab('learning-materials')">Learning Materials</button>
+                <button class="tab-button" onclick="showTab('my-classes')">Minhas Turmas</button>
+            </div>
+        </div>
+
+        <!-- Aba de Jogos -->
+        <div id="games" class="tab-content active">
+            <h2>Games</h2>
+            <div id="game-list" class="card-grid">
+                <!-- Cards de jogos serão preenchidos via JavaScript -->
+            </div>
+        </div>
+
+        <!-- Aba de Materiais -->
+        <div id="learning-materials" class="tab-content">
+            <h2>Learning Center</h2>
+            <div id="material-list" class="card-grid">
+                <!-- Cards de materiais serão preenchidos via JavaScript -->
+            </div>
+        </div>
+
+        <!-- Aba de Turmas -->
+        <div id="my-classes" class="tab-content">
+            <h2>Minhas Turmas</h2>
+            <div id="class-list" class="card-grid">
+                <!-- Cards de turmas serão preenchidos via JavaScript -->
+            </div>
+            <div id="classDetailsContainer" class="class-details" style="display: none;">
+                <h2>Detalhes da Turma: <span id="detailClassName"></span></h2>
+                <p><strong>Código:</strong> <span id="selectedClassCode"></span></p>
+                <p><strong>Nº Alunos:</strong> <span id="selectedClassStudents"></span></p>
+                <p><strong>Média Pontuação:</strong> <span id="selectedClassScore"></span>%</p>
+            </div>
+        </div>
+
+        <!-- Modal para entrar em uma turma -->
+        <div class="modal-overlay" onclick="closeJoinClassModal()"></div>
+        <div id="joinClassModal" class="modal">
+            <div class="modal-content">
+                <span class="close-button" onclick="closeJoinClassModal()">×</span>
+                <h2>Entrar em uma Turma</h2>
+                <form id="joinClassForm">
+                    <label for="classCode">Código da Turma</label>
+                    <input type="text" id="classCode" name="classCode" required>
+                    <p id="errorMessage" class="error-message"></p>
+                    <button type="submit" class="btn-primary">Entrar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/student_dashboard.js"></script>
+</html>
