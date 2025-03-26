@@ -73,8 +73,8 @@ const joinClass = async (req, res) => {
         }
 
         const existingEnrollment = await TurmaAluno.findOne({
-            where: {where: { aluno_id: studentId, turma_id: turma.id }}
-        });
+            where: { aluno_id: studentId, turma_id: turma.id }
+        });        
 
         if (existingEnrollment) {
             return res.status(400).json({ success: false, message: 'Já estás inscrito nesta turma.' });
