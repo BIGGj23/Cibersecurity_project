@@ -262,3 +262,38 @@ body {
 .btn-primary:hover {
     background-color: #3B4A56;
 }
+#class-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+  }
+  
+  .turma-item {
+    background-color: #ffffff;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transition: transform 0.2s ease;
+  }
+  
+  .turma-item:hover {
+    transform: translateY(-5px);
+  }
+  
+  .turma-item h3 {
+    margin: 0 0 10px;
+    font-size: 1.3rem;
+    color: #1d2b53;
+  }
+  
+  .turma-item p {
+    margin: 4px 0;
+    font-size: 0.95rem;
+    color: #444;
+  }
+  
+  .turma-item p strong {
+    color: #222;
+  }
+  

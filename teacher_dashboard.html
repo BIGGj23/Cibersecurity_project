@@ -68,17 +68,16 @@
         <div class="modal-overlay" onclick="closeCreateClassModal()"></div>
         <div id="createClassModal" class="modal">
             <div class="modal-content">
-                <span class="close-button" onclick="closeCreateClassModal()">×</span>
-                <h2>Create New Class</h2>
-                <form id="createClassForm">
-                    <label for="className">Nome da Turma</label>
-                    <input type="text" id="className" name="className" required>
-                    <p id="errorMessage" class="error-message"></p>
-                    <button type="submit" class="btn-primary">Create Class</button>
-                </form>
+              <span id="closeModal" class="close-button">&times;</span>
+              <h2>Criar Nova Turma</h2>
+              <form id="createClassForm">
+                <label for="className">Nome da Turma:</label>
+                <input type="text" id="className" name="className" required />
+                <button type="submit" class="btn-primary">Criar</button>
+              </form>
             </div>
         </div>
-    </div>
+        </div>
 
     <script src="js/teacher_dashboard.js"></script>
 </html>

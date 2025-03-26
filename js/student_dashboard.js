@@ -167,8 +167,9 @@ function loadGames() {
         }
         return response.json();
     })
-    .then(games => {
-        if (!Array.isArray(games) || games.length === 0) {
+    .then(data => {
+        const games = data.jogos;
+        if (!Array.isArray(games) || games.length === 0){
             gameList.innerHTML = "<p>Nenhum jogo disponível.</p>";
         } else {
             games.forEach(game => {

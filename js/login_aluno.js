@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
     const loginFormStudent = document.getElementById("loginFormStudent");
+document.getElementById("loginstudent").style.display = "flex";
 
     if (loginFormStudent) {
         loginFormStudent.addEventListener("submit", async function (event) {

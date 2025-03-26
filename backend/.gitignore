@@ -1,0 +1,12 @@
+# Ignorar dependências do Node.js
+node_modules/
+
+# Ignorar configurações do npm
+package-lock.json
+
+# Ignorar variáveis de ambiente
+.env
+
+# Ignorar logs
+*.log
+logs/

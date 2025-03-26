@@ -20,7 +20,11 @@
     "pg-hstore": "^2.3.4",
     "pg-promise": "^11.10.2",
     "sequelize": "^6.37.6",
-    "uuid": "^11.1.0"
+    "uuid": "^11.1.0",
+    "winston": "^3.17.0"
   },
-  "description": ""
+  "description": "",
+  "devDependencies": {
+    "sequelize-cli": "^6.6.2"
+  }
 }
