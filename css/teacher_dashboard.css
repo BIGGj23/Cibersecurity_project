@@ -7,8 +7,8 @@
 }
 
 body {
-    background-color: #1A252F; /* Fundo escuro */
-    color: #E5E7EB; /* Texto claro */
+    background-color: #1A252F;
+    color: #E5E7EB;
     min-height: 100vh;
     padding: 20px;
 }
@@ -19,22 +19,36 @@ body {
     margin: 0 auto;
 }
 
-/* Header (título e botão) */
+/* Header */
 .dashboard-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
     padding: 10px 0;
-    border-bottom: 1px solid #2D3B45; /* Linha sutil para separar */
+    border-bottom: 1px solid #2D3B45;
 }
 
 .dashboard-header h1 {
     font-size: 24px;
-    color: #E5E7EB;
+    color: #A3BFFA;
 }
 
-.create-class-btn {
+.user-stats {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.streak, .points {
+    background-color: #FFFFFF;
+    color: #1A252F;
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.join-class-btn {
     background-color: #2D3B45;
     color: #E5E7EB;
     border: none;
@@ -45,144 +59,153 @@ body {
     transition: background-color 0.3s;
 }
 
-.create-class-btn:hover {
+.join-class-btn:hover {
     background-color: #3B4A56;
 }
 
 /* Caixinha branca para as abas */
 .tab-container {
-    background-color: #FFFFFF; /* Fundo branco */
+    background-color: #FFFFFF;
     border-radius: 8px;
     padding: 10px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra leve */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     margin-bottom: 20px;
-    text-align: center; /* Centraliza o texto na barra */
+    text-align: center;
 }
 
-/* Menu de abas */
 .tab-menu {
     display: flex;
-    justify-content: center; /* Centraliza os botões horizontalmente */
+    justify-content: center;
     gap: 10px;
-    background-color: transparent; /* Fundo transparente dentro da caixinha */
+    background-color: transparent;
 }
 
-/* Botões das abas */
 .tab-button {
-    background-color: #ffffff; /* Fundo escuro (mesma cor do body) */
-    border: 2px solid #2D3B45; /* Borda escura pra destacar como botão */
-    color: #1A252F; /* Texto da cor do fundo pra contraste com o fundo branco da caixinha */
+    background-color: #FFFFFF;
+    border: 2px solid #2D3B45;
+    color: #1A252F;
     font-size: 14px;
-    padding: 8px 20px; /* Mais padding pra parecer botão */
-    border-radius: 4px; /* Bordas arredondadas */
+    padding: 8px 20px;
+    border-radius: 4px;
     cursor: pointer;
     transition: background-color 0.3s, color 0.3s, border-color 0.3s;
-    white-space: nowrap; /* Evita que o texto quebre */
+    white-space: nowrap;
 }
 
 .tab-button.active {
-    background-color: #FFFFFF; /* Fundo branco na aba ativa */
-    color: #1A252F; /* Texto escuro na aba ativa */
-    border-color: #1A252F; /* Borda escura na aba ativa */
-    font-weight: bold; /* Destaque visual */
+    background-color: #1A252F;
+    color: #E5E7EB;
+    border-color: #1A252F;
+    font-weight: bold;
 }
 
 .tab-button:hover {
-    background-color: #2D3B45; /* Efeito hover escuro */
-    color: #E5E7EB; /* Texto claro no hover */
+    background-color: #2D3B45;
+    color: #E5E7EB;
     border-color: #2D3B45;
 }
 
 /* Conteúdo das abas */
 .tab-content {
     display: none;
+    padding: 20px 0;
 }
 
 .tab-content.active {
     display: block;
 }
 
-/* Lista de turmas (cards) */
-#class-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 20px;
+.tab-content h2 {
+    font-size: 18px;
+    color: #A3BFFA;
     margin-bottom: 20px;
 }
 
-.class-card {
+/* Grid de cards */
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+/* Cards genéricos */
+.game-card, .material-card, .class-card {
     background-color: #FFFFFF;
     border-radius: 8px;
     padding: 20px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    color: #1A252F;
     transition: transform 0.2s;
 }
 
-.class-card:hover {
+.game-card:hover, .material-card:hover, .class-card:hover {
     transform: translateY(-5px);
 }
 
-.class-card h2 {
+.game-card h2, .material-card h2, .class-card h2 {
     font-size: 18px;
     font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.game-card p, .material-card p, .class-card p {
+    font-size: 14px;
+    color: #6B7280;
+    margin-bottom: 10px;
+}
+
+/* Níveis (Beginner, Intermediate, Advanced) */
+.game-card .level, .material-card .level {
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+}
+
+.game-card .level.beginner, .material-card .level.beginner {
+    background-color: #D4EDDA;
+    color: #155724;
+}
+
+.game-card .level.intermediate, .material-card .level.intermediate {
+    background-color: #FFF3CD;
+    color: #856404;
+}
+
+.game-card .level.advanced, .material-card .level.advanced {
+    background-color: #F8D7DA;
+    color: #721C24;
+}
+
+/* Pontos nos jogos */
+.game-card .points {
+    font-size: 14px;
     color: #1A252F;
     margin-bottom: 10px;
 }
 
-.class-card p {
+/* Botão "Start Game" */
+.game-card .start-btn {
+    background-color: #2D3B45;
+    color: #E5E7EB;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
     font-size: 14px;
-    color: #6B7280;
-    margin-bottom: 5px;
+    transition: background-color 0.3s;
+    width: 100%;
+    text-align: center;
 }
 
+.game-card .start-btn:hover {
+    background-color: #3B4A56;
+}
+
+/* Estilo específico pra turmas (sem botão "Start Game") */
 .class-card p strong {
-    color: #1A252F;
-}
-
-/* Detalhes da turma */
-.class-details {
-    background-color: #FFFFFF;
-    border-radius: 8px;
-    padding: 20px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    margin-top: 20px;
-    display: none;
-}
-
-.class-details.active {
-    display: block;
-}
-
-.class-details h2 {
-    font-size: 18px;
-    font-weight: bold;
-    color: #1A252F;
-    margin-bottom: 10px;
-}
-
-.class-details p {
-    font-size: 14px;
-    color: #6B7280;
-    margin-bottom: 5px;
-}
-
-.class-details p strong {
-    color: #1A252F;
-}
-
-/* Mensagem de boas-vindas */
-.welcome-message {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background-color: #FFFFFF;
-    border-radius: 8px;
-    padding: 10px 20px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.welcome-message p {
-    font-size: 14px;
     color: #1A252F;
 }
 
@@ -262,38 +285,173 @@ body {
 .btn-primary:hover {
     background-color: #3B4A56;
 }
-#class-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 2rem;
-    margin-top: 2rem;
-  }
-  
-  .turma-item {
-    background-color: #ffffff;
-    border-radius: 12px;
+#password-master {
+    background: #fff;
     padding: 20px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    transition: transform 0.2s ease;
+    border-radius: 12px;
+    max-width: 500px;
+    margin: auto;
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
   }
   
-  .turma-item:hover {
-    transform: translateY(-5px);
+  .level-tag {
+    background: #d4f7dc;
+    color: #256029;
+    font-size: 0.85rem;
+    padding: 4px 12px;
+    border-radius: 999px;
   }
   
-  .turma-item h3 {
-    margin: 0 0 10px;
-    font-size: 1.3rem;
-    color: #1d2b53;
+  #passwordInput {
+    width: 100%;
+    padding: 10px;
+    margin-top: 12px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
   }
   
-  .turma-item p {
-    margin: 4px 0;
-    font-size: 0.95rem;
-    color: #444;
+  #checkPasswordBtn {
+    margin-top: 12px;
+    padding: 10px 20px;
+    background: #2c3e50;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
   }
   
-  .turma-item p strong {
+  #checkPasswordBtn:hover {
+    background: #1c2a38;
+  }
+  
+  #passwordResult {
+    margin-top: 10px;
+    font-weight: bold;
+  }
+
+  /* ==================== JOGO: PHISHING DETECTIVE ==================== */
+
+.game-section {
+    background-color: #1f2a37;
+    color: #ffffff;
+    padding: 30px;
+    border-radius: 12px;
+    max-width: 750px;
+    margin: 40px auto;
+    box-shadow: 0 0 25px rgba(0, 0, 0, 0.2);
+    font-family: 'Segoe UI', sans-serif;
+}
+
+.game-section h2 {
+    font-size: 26px;
+    margin-bottom: 20px;
+}
+
+.nivel {
+    background-color: #f6e58d;
     color: #222;
-  }
-  
+    padding: 4px 12px;
+    font-size: 12px;
+    border-radius: 20px;
+    margin-left: 12px;
+    vertical-align: middle;
+}
+
+.game-section p {
+    margin: 10px 0;
+}
+
+.game-section .mensagem {
+    background-color: #ddd;
+    color: #222;
+    padding: 12px;
+    border-radius: 6px;
+    font-weight: 500;
+    font-size: 15px;
+    margin: 15px 0;
+}
+
+.jogo-btn {
+    background-color: #ffffff;
+    color: #1f2a37;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 6px;
+    font-weight: bold;
+    font-size: 14px;
+    cursor: pointer;
+    margin-right: 10px;
+    transition: all 0.2s ease-in-out;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+.jogo-btn:hover {
+    background-color: #e0e0e0;
+}
+
+#feedback {
+    margin-top: 20px;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+#feedback.correcto {
+    color: #2ecc71;
+}
+
+#feedback.incorreto {
+    color: #e74c3c;
+}
+
+/*--------------------design da turma--------------------*/
+
+.class-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: start;
+    padding-top: 20px;
+}
+
+.class-card {
+    background-color: #ffffff;
+    color: #1f2a37;
+    border-radius: 10px;
+    padding: 20px;
+    width: 280px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease-in-out;
+}
+
+.class-card:hover {
+    transform: scale(1.03);
+}
+
+.class-card h3 {
+    margin-top: 0;
+    font-size: 20px;
+    font-weight: 600;
+}
+.class-card p {
+    margin: 6px 0;
+    font-size: 14px;
+    color: #3b3b3b;
+}
+/*-----------botão criar turma------------------*/
+
+.create-class-btn {
+    background-color: #1f2a37;;
+    color: #ffffff;
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: 600;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    transition: background-color 0.3s ease;
+}
+
+.create-class-btn:hover {
+    background-color: #1f2a37;
+}
