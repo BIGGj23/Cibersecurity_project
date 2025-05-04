@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Dashboard</title>
+    <title>Dashboard do Aluno</title>
     <link rel="stylesheet" href="css/student_dashboard.css">
     <style>
         .error-message {
@@ -32,59 +32,47 @@
     <div class="dashboard-container">
         <!-- Header -->
         <header class="dashboard-header">
-            <h1>Cyber Training Hub</h1>
+            <h1>Dashboard do Aluno</h1>
             <div class="user-stats">
                 <span class="streak">Streak: 0 🔥</span>
-                <span class="points">Points: 0 ⭐</span>
-                <button class="join-class-btn">Entrar em uma Turma</button>
+                <span class="points">Pontos: 0 ⭐</span>
+                <button class="join-class-btn">Entrar numa Turma</button>
             </div>
         </header>
 
-        <!-- Abas -->
-        <div class="tab-container">
-            <div class="tab-menu">
-                <button class="tab-button active" onclick="showTab('games')">Games</button>
-                <button class="tab-button" onclick="showTab('learning-materials')">Learning Materials</button>
-                <button class="tab-button" onclick="showTab('my-classes')">Minhas Turmas</button>
-            </div>
-        </div>
+        <!-- Botões de navegação -->
+<div class="tabs">
+    <button class="tab-button" data-tab="games">Jogos</button>
+    <button class="tab-button" data-tab="materials">Materiais de Aprendizagem</button>
+    <button class="tab-button" data-tab="classes">Minhas Turmas</button>
+</div>
 
-        <!-- Aba de Jogos -->
-        <div id="games" class="tab-content active">
-            <h2>Games</h2>
-            <div id="game-list" class="card-grid">
-                <!-- Cards de jogos serão preenchidos via JavaScript -->
-            </div>
-        </div>
+<!-- Conteúdos das abas -->
+<div class="tab-content" id="games">
+    <h2>Jogos</h2>
+    <div id="game-list"></div>
+</div>
+<!-- Game container para mostrar o jogo -->
+<div id="game-container" style="display: none;"></div>
 
-        <!-- Aba de Materiais -->
-        <div id="learning-materials" class="tab-content">
-            <h2>Learning Center</h2>
-            <div id="material-list" class="card-grid">
-                <!-- Cards de materiais serão preenchidos via JavaScript -->
-            </div>
-        </div>
+<!-- Conteudo materiais aprendizagem-->
+<div class="tab-content" id="materials" style="display:none;">
+    <h2>Materiais de Aprendizagem</h2>
+    <p>Conteúdos aqui...</p>
+</div>
+<!-- Lista de turmas -->
+<div class="tab-content" id="classes" style="display:none;">
+    <h2>Minhas Turmas</h2>
+    <div id="class-list"></div>
+</div>
 
-        <!-- Aba de Turmas -->
-        <div id="my-classes" class="tab-content">
-            <h2>Minhas Turmas</h2>
-            <div id="class-list" class="card-grid">
-                <!-- Cards de turmas serão preenchidos via JavaScript -->
-            </div>
-            <div id="classDetailsContainer" class="class-details" style="display: none;">
-                <h2>Detalhes da Turma: <span id="detailClassName"></span></h2>
-                <p><strong>Código:</strong> <span id="selectedClassCode"></span></p>
-                <p><strong>Nº Alunos:</strong> <span id="selectedClassStudents"></span></p>
-                <p><strong>Média Pontuação:</strong> <span id="selectedClassScore"></span>%</p>
-            </div>
-        </div>
 
         <!-- Modal para entrar em uma turma -->
         <div class="modal-overlay" onclick="closeJoinClassModal()"></div>
         <div id="joinClassModal" class="modal">
             <div class="modal-content">
                 <span class="close-button" onclick="closeJoinClassModal()">×</span>
-                <h2>Entrar em uma Turma</h2>
+                <h2>Entrar numa Turma</h2>
                 <form id="joinClassForm">
                     <label for="classCode">Código da Turma</label>
                     <input type="text" id="classCode" name="classCode" required>
@@ -96,4 +84,6 @@
     </div>
 
     <script src="js/student_dashboard.js"></script>
+    <script src="js/password_master.js"></script>
+    <script src="js/phising_detective.js"></script>
 </html>
