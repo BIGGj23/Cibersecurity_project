@@ -12,6 +12,7 @@ const logger = require('./middleware/logger');
 const authRoutes = require('./routes/authRoutes');
 const classRoutes = require('./routes/classRoutes');
 const sequelize = require('./config/database');
+const gameRoutes = require("./routes/gameRoutes");
 
 const app = express();
 
@@ -25,10 +26,10 @@ app.use(logger);
 const path = require('path');
 app.use(express.static(path.join(__dirname, '..'))); // Serve a root do projeto
 
-
 // Rotas principais
 app.use('/auth', authRoutes);
 app.use('/classes', classRoutes);
+app.use("/games", gameRoutes);
 
 // Rota de teste para ver se o servidor está rodando
 app.get('/', (req, res) => {
