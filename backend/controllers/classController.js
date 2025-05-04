@@ -1,4 +1,5 @@
-const { Turma, Utilizador, Jogo, TurmaAluno } = require('../models/associations');
+const { Turma, Utilizador, Jogo, TurmaAluno, PontuacaoJogo } = require('../models/associations');
+
 
 // Criar uma nova turma
 const createClass = async (req, res) => {
@@ -104,13 +105,24 @@ const getStudentStats = async (req, res) => {
     try {
         const studentId = req.user.id;
 
-        // Aqui colocas a lógica para calcular a streak e os pontos totais
-        // Exemplo (simplesmente fictício):
         const totalPontos = await PontuacaoJogo.sum('pontuacao', {
             where: { aluno_id: studentId }
         });
 
-        const streakAtual = 0; // Aqui podes futuramente implementar lógica de streak real
+        const jogadas = await PontuacaoJogo.findAll({
+            where: { aluno_id: studentId },
+            order: [['jogado_em', 'DESC']],
+            limit: 10
+        });
+
+        let streakAtual = 0;
+        for (const jogada of jogadas) {
+            if (jogada.pontuacao > 0) {
+                streakAtual++;
+            } else {
+                break;
+            }
+        }
 
         res.json({ streak: streakAtual, points: totalPontos || 0 });
     } catch (error) {
@@ -118,6 +130,8 @@ const getStudentStats = async (req, res) => {
         res.status(500).json({ error: "Erro ao obter estatísticas do aluno" });
     }
 };
+
+
 const getLearningMaterials = async (req, res) => {
     try {
         // Exemplo de dados simulados — depois podes guardar na base de dados
