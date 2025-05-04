@@ -1,66 +1,36 @@
-function showTab(tabId) {
-    const tabContents = document.querySelectorAll(".tab-content");
-    const tabButtons = document.querySelectorAll(".tab-button");
-
-    tabContents.forEach(tab => tab.style.display = "none");
-    tabButtons.forEach(btn => btn.classList.remove("active"));
-
-    const targetTab = document.getElementById(tabId);
-    if (targetTab) {
-        targetTab.style.display = "block";
-        const activeButton = Array.from(tabButtons).find(btn => btn.getAttribute("onclick")?.includes(tabId));
-        if (activeButton) activeButton.classList.add("active");
-    }
-}
-
 document.addEventListener("DOMContentLoaded", async function () {
     const token = localStorage.getItem("token");
+    localStorage.setItem("tipo", "professor");
 
-    // Verifica se o professor está autenticado
     if (!token) {
         alert("Você precisa estar logado para acessar esta página.");
         window.location.href = "teacher_login.html";
         return;
     }
 
-    // Carrega inicialmente as turmas
     await loadClasses();
 
-    // Eventos do modal de criar turma
     const modal = document.getElementById("createClassModal");
     const openBtn = document.querySelector(".create-class-btn");
-    const closeBtn = document.getElementById("closeModal");
+    const closeBtn = document.querySelector(".close-button");
 
     if (modal && openBtn && closeBtn) {
         modal.style.display = "none";
 
-        openBtn.addEventListener("click", () => {
-            modal.style.display = "block";
-        });
-
-        closeBtn.addEventListener("click", () => {
-            modal.style.display = "none";
-        });
+        openBtn.addEventListener("click", () => modal.style.display = "block");
+        closeBtn.addEventListener("click", () => modal.style.display = "none");
 
         window.addEventListener("click", (event) => {
-            if (event.target === modal) {
-                modal.style.display = "none";
-            }
+            if (event.target === modal) modal.style.display = "none";
         });
     }
 
-    // SUBMISSÃO do formulário de criação de turma
     const createClassForm = document.getElementById("createClassForm");
     if (createClassForm) {
         createClassForm.addEventListener("submit", async (e) => {
             e.preventDefault();
-
             const nome = document.getElementById("className").value;
-
-            if (!nome) {
-                alert("⚠️ Nome da turma é obrigatório!");
-                return;
-            }
+            if (!nome) return alert("⚠️ Nome da turma é obrigatório!");
 
             try {
                 const response = await fetch("http://localhost:3000/classes/create", {
@@ -77,7 +47,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                     alert(data.message || "✅ Turma criada com sucesso!");
                     modal.style.display = "none";
                     createClassForm.reset();
-                    loadClasses(); // Atualiza lista
+                    loadClasses();
                 } else {
                     alert(data.message || 'Erro ao criar turma.');
                 }
@@ -88,52 +58,144 @@ document.addEventListener("DOMContentLoaded", async function () {
         });
     }
 
-    // Função para carregar as turmas do professor
-    async function loadClasses() {
-        try {
-            const response = await fetch("http://localhost:3000/classes/professor", {
-                method: "GET",
-                headers: {
-                    "Authorization": `Bearer ${token}`
-                }
-            });
-
-            const data = await response.json();
-            const classList = document.getElementById("class-list");
-
-            if (!classList) {
-                console.error("❌ Elemento 'class-list' não encontrado no DOM.");
-                return;
-            }
-
-            classList.innerHTML = "";
-
-            if (response.ok && data.turmas && data.turmas.length > 0) {
-                data.turmas.forEach(turma => {
-                    const turmaDiv = document.createElement("div");
-                    turmaDiv.classList.add("turma-item");
-                    turmaDiv.innerHTML = `
-                        <h3>${turma.nome}</h3>
-                        <p><strong>Código de Acesso:</strong> ${turma.codigo_acesso}</p>
-                    `;
-                    classList.appendChild(turmaDiv);
-                });
-            } else {
-                classList.innerHTML = "<p>Ainda não criaste nenhuma turma.</p>";
-            }
-        } catch (error) {
-            console.error("Erro ao carregar turmas:", error);
-            alert("Erro ao carregar turmas, tenta novamente mais tarde.");
-        }
-    }
-
-    // Logout
     const logoutBtn = document.getElementById("logoutBtn");
     if (logoutBtn) {
         logoutBtn.addEventListener("click", function () {
-            localStorage.removeItem("token");
-            localStorage.removeItem("professor_id");
+            localStorage.clear();
             window.location.href = "teacher_login.html";
         });
     }
+
+    // Abas com data-tab
+    const tabButtons = document.querySelectorAll(".tab-button");
+    tabButtons.forEach(button => {
+        button.addEventListener("click", function () {
+            const tabName = this.dataset.tab;
+            showTab(tabName);
+        });
+    });
 });
+
+function showTab(tabName) {
+    document.querySelectorAll(".tab-content").forEach(tab => {
+        tab.style.display = "none";
+    });
+
+    document.querySelectorAll(".tab-button").forEach(button => {
+        button.classList.remove("active");
+    });
+
+    const tabContent = document.getElementById(tabName);
+    if (tabContent) tabContent.style.display = "block";
+
+    const tabButton = document.querySelector(`.tab-button[data-tab="${tabName}"]`);
+    if (tabButton) tabButton.classList.add("active");
+
+    if (tabName === "games") {
+        loadGames();
+    } else if (tabName === "classes") {
+        loadClasses();
+    }
+}
+
+async function loadClasses() {
+    const token = localStorage.getItem("token");
+
+    try {
+        const response = await fetch("http://localhost:3000/classes/professor", {
+            headers: { "Authorization": `Bearer ${token}` }
+        });
+
+        const data = await response.json();
+        const classList = document.getElementById("class-list");
+
+        if (!classList) return;
+
+        classList.innerHTML = "";
+        classList.classList.add("class-grid");
+
+        if (data.turmas && data.turmas.length > 0) {
+            data.turmas.forEach(turma => {
+                const card = document.createElement("div");
+                card.classList.add("class-card");
+                card.innerHTML = `
+                    <h3>${turma.nome}</h3>
+                    <p><strong>Código da Turma:</strong> ${turma.codigo_acesso}</p>
+                    <p><strong>Nº Aunos:</strong> ${turma.numero_alunos ?? 0}</p>
+                    <p><strong>Pontuação média:</strong> ${turma.media_pontuacao ?? 0}%</p>
+                `;
+                classList.appendChild(card);
+            });
+        } else {
+            classList.innerHTML = "<p>Ainda não criaste nenhuma turma.</p>";
+        }
+    } catch (error) {
+        console.error("Erro ao carregar turmas:", error);
+        alert("Erro ao carregar turmas, tenta novamente mais tarde.");
+    }
+}
+
+
+function loadGames() {
+    const token = localStorage.getItem("token");
+    const gameList = document.getElementById("game-list");
+    const gameContainer = document.getElementById("game-container");
+
+    if (!gameList || !gameContainer) return;
+
+    gameList.innerHTML = "";
+    gameContainer.innerHTML = "";
+    gameContainer.style.display = "none";
+
+    fetch("http://localhost:3000/classes/games", {
+        headers: { Authorization: `Bearer ${token}` }
+    })
+    .then(res => res.json())
+    .then(data => {
+        data.jogos.forEach(game => {
+            const card = document.createElement("div");
+            card.classList.add("game-card");
+            card.innerHTML = `
+                <h2>${game.titulo}</h2>
+                <span class="level ${game.nivel}">${game.nivel}</span>
+                <p>${game.descricao}</p>
+                <button class="start-btn" data-id="${game.id}">Start Game</button>
+            `;
+
+            card.querySelector(".start-btn").addEventListener("click", () => {
+                gameList.style.display = "none";
+                gameContainer.style.display = "block";
+                gameContainer.innerHTML = "";
+
+                switch (game.id) {
+                    case 1:
+                        if (typeof iniciarPhishingDetective === "function") {
+                            iniciarPhishingDetective(true);
+                        } else {
+                            const script = document.createElement("script");
+                            script.src = "js/phishing_detective.js";
+                            script.onload = () => iniciarPhishingDetective(true);
+                            document.body.appendChild(script);
+                        }
+                        break;
+
+                    case 2:
+                        if (typeof iniciarPasswordMaster === "function") {
+                            iniciarPasswordMaster(true);
+                        } else {
+                            const script = document.createElement("script");
+                            script.src = "js/password_master.js";
+                            script.onload = () => iniciarPasswordMaster(true);
+                            document.body.appendChild(script);
+                        }
+                        break;
+
+                    default:
+                        gameContainer.innerHTML = "<p>Jogo ainda não disponível.</p>";
+                }
+            });
+
+            gameList.appendChild(card);
+        });
+    });
+}

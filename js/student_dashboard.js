@@ -35,11 +35,11 @@ document.addEventListener("DOMContentLoaded", function () {
     const tabButtons = document.querySelectorAll(".tab-button");
     tabButtons.forEach(button => {
         button.addEventListener("click", function () {
-            const tabName = this.getAttribute("onclick").match(/'([^']+)'/)[1];
+            const tabName = this.dataset.tab;
             showTab(tabName);
         });
     });
-
+    
     // Carrega os jogos ao abrir a página (aba inicial)
     loadGames();
     loadStats(); // Carrega as estatísticas do aluno
@@ -58,145 +58,198 @@ function closeJoinClassModal() {
 
 function showTab(tabName) {
     document.querySelectorAll(".tab-content").forEach(tab => {
-        tab.classList.remove("active");
+        tab.style.display = "none";
     });
 
     document.querySelectorAll(".tab-button").forEach(button => {
         button.classList.remove("active");
     });
 
-    document.getElementById(tabName).classList.add("active");
-    document.querySelector(`button[onclick="showTab('${tabName}')"]`).classList.add("active");
+    const tabContent = document.getElementById(tabName);
+    if (tabContent) tabContent.style.display = "block";
 
-    // Chama a função correspondente com base na aba
+    const tabButton = document.querySelector(`.tab-button[data-tab="${tabName}"]`);
+    if (tabButton) tabButton.classList.add("active");
+
+    // Carrega dados conforme a aba
     if (tabName === "games") {
         loadGames();
-    } else if (tabName === "learning-materials") {
+    } else if (tabName === "materials") {
         loadMaterials();
-    } else if (tabName === "my-classes") {
+    } else if (tabName === "classes") {
         loadClasses();
     }
 }
 
-function loadStats() {
+async function loadStats() {
     const token = localStorage.getItem("token");
-    if (!token) {
-        console.error("Token não encontrado no localStorage. Faça login novamente.");
-        window.location.href = "student_login.html";
-        return;
-    }
 
-    fetch("http://localhost:3000/classes/student/stats", {
-        headers: { "Authorization": `Bearer ${token}` }
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error(`Erro na requisição: ${response.status} ${response.statusText}`);
+    try {
+        const response = await fetch("http://localhost:3000/classes/student/stats", {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
+
+        const data = await response.json();
+
+        if (data.streak !== undefined && data.points !== undefined) {
+            document.querySelector(".streak").textContent = `Streak: ${data.streak} 🔥`;
+            document.querySelector(".points").textContent = `Points: ${data.points} ⭐`;
         }
-        return response.json();
-    })
-    .then(data => {
-        document.querySelector(".streak").textContent = `Streak: ${data.streak} 🔥`;
-        document.querySelector(".points").textContent = `Points: ${data.points} ⭐`;
-    })
-    .catch(error => {
-        console.error("Erro ao carregar estatísticas:", error);
-        alert("Não foi possível carregar as estatísticas. Verifique sua conexão ou o token.");
-    });
+    } catch (err) {
+        console.error("❌ Erro ao carregar estatísticas:", err);
+    }
 }
 
+
 function loadClasses() {
+    console.log("CHAMOU loadClasses()");
+
     const token = localStorage.getItem("token");
     if (!token) {
-        console.error("Token não encontrado no localStorage. Faça login novamente.");
-        window.location.href = "student_login.html";
+        console.error("Token não encontrado.");
         return;
     }
 
     fetch("http://localhost:3000/classes/student", {
-        headers: { "Authorization": `Bearer ${token}` }
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error(`Erro na requisição: ${response.status} ${response.statusText}`);
+        headers: {
+            "Authorization": `Bearer ${token}`
         }
-        return response.json();
     })
+    .then(response => response.json())
     .then(data => {
+        console.log("Resposta da API:", data);
+
         const classList = document.getElementById("class-list");
+        if (!classList) {
+            console.error("Elemento #class-list não encontrado.");
+            return;
+        }
+
         classList.innerHTML = "";
 
-        if (data && Array.isArray(data.turmas)) {
-            if (data.turmas.length === 0) {
-                classList.innerHTML = "<p>Nenhuma turma associada ainda.</p>";
-            } else {
-                data.turmas.forEach(turma => {
-                    adicionarTurmaAoFrontend(turma);
-                });
-            }
-        } else if (data && data.message) {
-            console.error("Erro retornado pela API:", data.message);
-            alert(data.message);
-        } else {
-            console.error("Os dados recebidos não contêm uma propriedade 'turmas' válida:", data);
+        if (!data.turmas || data.turmas.length === 0) {
+            classList.innerHTML = "<p>Você ainda não está em nenhuma turma.</p>";
+            return;
         }
+
+        data.turmas.forEach(turma => adicionarTurmaAoFrontend(turma));
     })
     .catch(error => {
-        console.error("Erro ao carregar turmas:", error);
-        alert("Não foi possível carregar as turmas. Verifique sua conexão ou o token.");
+        console.error("Erro ao buscar turmas:", error);
     });
 }
+
+function adicionarTurmaAoFrontend(turma) {
+    console.log("Adicionando turma:", turma);
+
+    const turmaCard = document.createElement("div");
+    turmaCard.classList.add("turma-card");
+
+    turmaCard.innerHTML = `
+        <h3>${turma.nome}</h3>
+        <p>Código de Acesso: ${turma.codigo_acesso}</p>
+    `;
+
+    const classList = document.getElementById("class-list");
+    if (classList) classList.appendChild(turmaCard);
+}
+
 
 function loadGames() {
     const token = localStorage.getItem("token");
     if (!token) {
-        console.error("Token não encontrado no localStorage. Faça login novamente.");
+        console.error("Token não encontrado. Redirecionando...");
         window.location.href = "student_login.html";
         return;
     }
 
     const gameList = document.getElementById("game-list");
-    gameList.innerHTML = ""; // Limpa o conteúdo anterior
+    const gameContainer = document.getElementById("game-container");
+
+    if (!gameList || !gameContainer) {
+        console.warn("Elementos 'game-list' ou 'game-container' não encontrados.");
+        return;
+    }
+
+    gameList.innerHTML = "";
+    gameContainer.innerHTML = "";
+    gameContainer.style.display = "none";
 
     fetch("http://localhost:3000/classes/games", {
-        headers: { "Authorization": `Bearer ${token}` }
+        headers: { Authorization: `Bearer ${token}` }
     })
     .then(response => {
-        if (!response.ok) {
-            throw new Error(`Erro na requisição: ${response.status} ${response.statusText}`);
-        }
+        if (!response.ok) throw new Error(`Erro na requisição: ${response.status}`);
         return response.json();
     })
     .then(data => {
         const games = data.jogos;
-        if (!Array.isArray(games) || games.length === 0){
-            gameList.innerHTML = "<p>Nenhum jogo disponível.</p>";
-        } else {
-            games.forEach(game => {
-                const gameCard = document.createElement("div");
-                gameCard.classList.add("game-card");
-                gameCard.innerHTML = `
-                    <h2>${game.nome || "Jogo Sem Nome"}</h2>
-                    <span class="level ${game.nivel || 'beginner'}">${game.nivel || 'beginner'}</span>
-                    <p>${game.descricao || "Descrição não disponível"}</p>
-                    <p class="points">Points: ${game.pontos || 0}</p>
-                    <button class="start-btn" data-game-id="${game.id}">Start Game</button>
-                `;
-                gameList.appendChild(gameCard);
 
-                // Adiciona evento ao botão "Start Game"
-                gameCard.querySelector(".start-btn").addEventListener("click", () => {
-                    const gameId = game.id;
-                    window.location.href = `game.html?id=${gameId}`; // Redireciona para a página do jogo
-                });
-            });
+        if (!Array.isArray(games) || games.length === 0) {
+            gameList.innerHTML = "<p>Nenhum jogo disponível.</p>";
+            return;
         }
+
+        games.forEach(game => {
+            const gameCard = document.createElement("div");
+            gameCard.classList.add("game-card");
+            gameCard.innerHTML = `
+                <h2>${game.titulo || "Jogo Sem Nome"}</h2>
+                <span class="level ${game.nivel || 'beginner'}">${game.nivel || 'beginner'}</span>
+                <p>${game.descricao || "Descrição não disponível"}</p>
+                <p class="points">Points: ${game.pontos || 0}</p>
+                <button class="start-btn" data-game-id="${game.id}">Start Game</button>
+            `;
+
+            gameCard.querySelector(".start-btn").addEventListener("click", () => {
+                gameList.parentElement.style.display = "none";
+                gameContainer.style.display = "block";
+                gameContainer.innerHTML = ""; // Limpa o anterior
+
+                switch (game.id) {
+                    case 1: // Phishing Detective
+                        gameContainer.innerHTML = "";
+                        const scriptPhishing = document.createElement('script');
+                        scriptPhishing.src = 'js/phishing_detective.js';
+                        scriptPhishing.onload = () => iniciarPhishingDetective();
+                        document.body.appendChild(scriptPhishing);
+                        break;
+                    case 2: // Password Master
+                            gameContainer.innerHTML = `
+                            <div id="password-master" class="game-section">
+                                <h2>Password Master</h2>
+                                <p>Tenta criar uma password segura!</p>
+                                <input type="text" id="passwordInput" placeholder="Insere a tua password" />
+                                <button id="checkPasswordBtn">Verificar Password</button>
+                                <p id="passwordResult"></p>
+                                <p>Pontuação: <span id="passwordPoints">0</span></p>
+                            </div>
+                        `;
+                        
+                        const script = document.createElement('script');
+                        script.src = 'js/password_master.js';
+                        script.onload = () => iniciarPasswordMaster(); // chama a função quando o script estiver carregado
+                        document.body.appendChild(script);
+                
+                        break;
+
+                    default:
+                        gameContainer.innerHTML = "<p>Este jogo ainda não está disponível.</p>";
+                        break;
+                }
+            });
+
+            gameList.appendChild(gameCard);
+        });
     })
     .catch(error => {
         console.error("Erro ao carregar jogos:", error);
-        gameList.innerHTML = "<p>Não foi possível carregar os jogos. Verifique sua conexão ou o token.</p>";
+        gameList.innerHTML = "<p>Não foi possível carregar os jogos.</p>";
     });
 }
+
 
 function loadMaterials() {
     const token = localStorage.getItem("token");
@@ -329,5 +382,5 @@ function joinClass() {
 function logout() {
     localStorage.removeItem("token");
     localStorage.removeItem("aluno_id");
-    window.location.href = "student_login.html";
+    window.location.href = "index.html";
 }
