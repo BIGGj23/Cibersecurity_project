@@ -1,5 +1,9 @@
-require('dotenv').config();
+if (process.env.NODE_ENV !== 'production') {
+    require('dotenv').config();
+}
+
 console.log("🔍 Variáveis de ambiente carregadas:");
+console.log("🌍 Ambiente:", process.env.NODE_ENV || 'development');
 console.log("DB_NAME:", process.env.DB_NAME);
 console.log("DB_USER:", process.env.DB_USER);
 console.log("DB_PASS:", process.env.DB_PASS ? "****" : "Não definida");
