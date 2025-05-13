@@ -92,6 +92,7 @@ function showTab(tabName) {
 
     if (tabName === "games") loadGames();
     else if (tabName === "classes") loadClasses();
+    else if (tabName === "materials") loadMaterials();
 }
 
 async function loadClasses() {
@@ -193,3 +194,134 @@ function loadGames() {
         });
     });
 }
+
+// Função para iniciar o material
+function loadMaterials() {
+    const materialList = document.getElementById("material-list");
+    const materialContainer = document.getElementById("material-container");
+  
+    if (!materialList || !materialContainer) return;
+  
+    materialList.innerHTML = "";
+    materialContainer.style.display = "none";
+    materialList.style.display = "grid";
+  
+    const cards = [
+      {
+        id: "password",
+        titulo: "Como criar uma password segura?",
+        nivel: "Iniciante",
+        categoria: "Autenticação",
+        descricao: "Aprende como criar uma password/senha segura."
+      },
+      {
+        id: "phishing",
+        titulo: "Como detetar um phishing?",
+        nivel: "Iniciante",
+        categoria: "Engenharia Social",
+        descricao: "Aprende a reconhecer e evitar ataques de phishing."
+      },
+      {
+        id: "malware",
+        titulo: "Como descobrir infecção um malware?",
+        nivel: "Intermediário",
+        categoria: "Segurança de Sistemas",
+        descricao: "Identifica sintomas e prevenção de infeções por malware."
+      }
+    ];
+  
+    cards.forEach(mat => {
+      const card = document.createElement("div");
+      card.classList.add("class-card");
+      card.innerHTML = `
+        <h2>${mat.titulo}</h2>
+        <p class="material-nivel">${mat.nivel}</p>
+        <p><strong>${mat.categoria}</strong></p>
+        <p>${mat.descricao}</p>
+        <button class="btn-aprender" onclick="iniciarMaterial('${mat.id}')">Vamos Aprender!</button>
+      `;
+      materialList.appendChild(card);
+    });
+  }
+  
+
+  const materiais ={
+    password: {
+      titulo: "Como criar uma password segura?",
+      conteudo: `
+        <h3>O que é uma password segura?</h3>
+        <ul>
+          <li>Pelo menos 8 caracteres</li>
+          <li>Letras maiúsculas, minúsculas, números e símbolos</li>
+          <li>Evita nomes, datas e palavras óbvias</li>
+        </ul>
+        <h3>Boas práticas</h3>
+        <ul>
+          <li>Não reutilizar senhas</li>
+          <li>Usar gestores de palavras-passe</li>
+          <li>Atualizar senhas regularmente</li>
+        </ul>
+      `
+    },
+    phishing: {
+      titulo: "Como detetar um phishing?",
+      conteudo: `
+        <h3>Sinais de alerta:</h3>
+        <ul>
+          <li>Remetente desconhecido ou suspeito</li>
+          <li>Links com domínios falsos ou estranhos</li>
+          <li>Urgência no pedido (ex: “responda já”)</li>
+        </ul>
+        <h3>Boas práticas:</h3>
+        <ul>
+          <li>Não clicar em links suspeitos</li>
+          <li>Confirmar URLs manualmente</li>
+          <li>Ativar autenticação de dois fatores</li>
+        </ul>
+      `
+    },
+    malware: {
+      titulo: "Como descobrir um malware?",
+      conteudo: `
+        <h3>Sintomas de malware:</h3>
+        <ul>
+          <li>Computador lento sem motivo</li>
+          <li>Programas ou janelas estranhas</li>
+          <li>Redirecionamentos para sites desconhecidos</li>
+        </ul>
+        <h3>Como te proteger:</h3>
+        <ul>
+          <li>Usar antivírus confiável</li>
+          <li>Evitar downloads suspeitos</li>
+          <li>Atualizar o sistema regularmente</li>
+        </ul>
+      `
+    }
+  };
+
+  // Função para iniciar o material
+  function iniciarMaterial(id) {
+    const material = materiais[id];
+    const materialList = document.getElementById("material-list");
+    const materialContainer = document.getElementById("material-container");
+    const materialContent = document.getElementById("material-content");
+  
+    if (!material || !materialList || !materialContainer || !materialContent) return;
+  
+    materialList.style.display = "none";
+    materialContainer.style.display = "block";
+    materialContent.innerHTML = `
+      <h2>${material.titulo}</h2>
+      <div>${material.conteudo}</div>
+    `;
+  }
+  window.iniciarMaterial = iniciarMaterial;
+  
+  // Função para voltar à lista de materiais
+  function voltarParaLista() {
+    document.getElementById("material-container").style.display = "none";
+    document.getElementById("material-list").style.display = "grid";
+  }
+  window.voltarParaLista = voltarParaLista;
+  
+
