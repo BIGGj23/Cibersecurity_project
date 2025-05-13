@@ -54,9 +54,16 @@
         <!-- Conteudo materiais aprendizagem-->
         <div class="tab-content" id="materials" style="display:none;">
             <h2>Materiais de Aprendizagem</h2>
-            <p>Conteúdos aqui...</p>
+            <div id="material-list" class="card-grid"></div>
+        
+            <div id="material-container" style="display: none;">
+                <button class="btn-voltar" onclick="voltarParaLista()">⬅ Voltar</button>
+                <div class="material-scroll" id="material-content"></div>
+              </div>
+              
         </div>
 
+        <!-- Conteudo turmas-->
         <div class="tab-content" id="classes" style="display: block;">
             <h2>Minhas Turmas</h2>
             <div id="class-list"></div>
