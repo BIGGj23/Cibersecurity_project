@@ -51,7 +51,7 @@ function iniciarPasswordMaster() {
         const token = localStorage.getItem("token");
 
         try {
-            await fetch("http://localhost:3000/games/score/", {
+            await fetch(`${API_BASE_URL}/games/score/`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -60,7 +60,7 @@ function iniciarPasswordMaster() {
                 body: JSON.stringify({
                     pontuacao: pontosGanhos,
                     multiplicador,
-                    jogo_id: 2, // <- certifica-te que este é o ID correto
+                    jogo_id: 2
                 }),
             });
 
@@ -69,7 +69,6 @@ function iniciarPasswordMaster() {
             }
 
             atualizarPontuacaoVisual();
-
         } catch (error) {
             console.error("Erro ao guardar pontuação:", error);
         }
@@ -80,7 +79,7 @@ function iniciarPasswordMaster() {
     async function atualizarPontuacaoVisual() {
         const token = localStorage.getItem("token");
         try {
-            const response = await fetch("http://localhost:3000/classes/student/stats", {
+            const response = await fetch(`${API_BASE_URL}/classes/student/stats`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }

@@ -33,7 +33,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             if (!nome) return alert("⚠️ Nome da turma é obrigatório!");
 
             try {
-                const response = await fetch("http://localhost:3000/classes/create", {
+                const response = await fetch(`${API_BASE_URL}/classes/create`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
@@ -66,7 +66,6 @@ document.addEventListener("DOMContentLoaded", async function () {
         });
     }
 
-    // Abas com data-tab
     const tabButtons = document.querySelectorAll(".tab-button");
     tabButtons.forEach(button => {
         button.addEventListener("click", function () {
@@ -91,18 +90,15 @@ function showTab(tabName) {
     const tabButton = document.querySelector(`.tab-button[data-tab="${tabName}"]`);
     if (tabButton) tabButton.classList.add("active");
 
-    if (tabName === "games") {
-        loadGames();
-    } else if (tabName === "classes") {
-        loadClasses();
-    }
+    if (tabName === "games") loadGames();
+    else if (tabName === "classes") loadClasses();
 }
 
 async function loadClasses() {
     const token = localStorage.getItem("token");
 
     try {
-        const response = await fetch("http://localhost:3000/classes/professor", {
+        const response = await fetch(`${API_BASE_URL}/classes/professor`, {
             headers: { "Authorization": `Bearer ${token}` }
         });
 
@@ -121,7 +117,7 @@ async function loadClasses() {
                 card.innerHTML = `
                     <h3>${turma.nome}</h3>
                     <p><strong>Código da Turma:</strong> ${turma.codigo_acesso}</p>
-                    <p><strong>Nº Aunos:</strong> ${turma.numero_alunos ?? 0}</p>
+                    <p><strong>Nº Alunos:</strong> ${turma.numero_alunos ?? 0}</p>
                     <p><strong>Pontuação média:</strong> ${turma.media_pontuacao ?? 0}%</p>
                 `;
                 classList.appendChild(card);
@@ -135,7 +131,6 @@ async function loadClasses() {
     }
 }
 
-
 function loadGames() {
     const token = localStorage.getItem("token");
     const gameList = document.getElementById("game-list");
@@ -147,7 +142,7 @@ function loadGames() {
     gameContainer.innerHTML = "";
     gameContainer.style.display = "none";
 
-    fetch("http://localhost:3000/classes/games", {
+    fetch(`${API_BASE_URL}/classes/games`, {
         headers: { Authorization: `Bearer ${token}` }
     })
     .then(res => res.json())
@@ -169,25 +164,24 @@ function loadGames() {
 
                 switch (game.id) {
                     case 1:
-                        if (typeof iniciarPhishingDetective === "function") {
-                            iniciarPhishingDetective(true);
-                        } else {
-                            const script = document.createElement("script");
-                            script.src = "js/phishing_detective.js";
-                            script.onload = () => iniciarPhishingDetective(true);
-                            document.body.appendChild(script);
-                        }
+                        const script1 = document.createElement("script");
+                        script1.src = "js/phishing_detective.js";
+                        script1.onload = () => iniciarPhishingDetective(true);
+                        document.body.appendChild(script1);
                         break;
 
                     case 2:
-                        if (typeof iniciarPasswordMaster === "function") {
-                            iniciarPasswordMaster(true);
-                        } else {
-                            const script = document.createElement("script");
-                            script.src = "js/password_master.js";
-                            script.onload = () => iniciarPasswordMaster(true);
-                            document.body.appendChild(script);
-                        }
+                        const script2 = document.createElement("script");
+                        script2.src = "js/password_master.js";
+                        script2.onload = () => iniciarPasswordMaster(true);
+                        document.body.appendChild(script2);
+                        break;
+
+                    case 3:
+                        const script3 = document.createElement("script");
+                        script3.src = "js/malware_hunter.js";
+                        script3.onload = () => iniciarMalwareHunter(true);
+                        document.body.appendChild(script3);
                         break;
 
                     default:

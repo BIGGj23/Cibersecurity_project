@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
     const loginFormStudent = document.getElementById("loginFormStudent");
-document.getElementById("loginstudent").style.display = "flex";
+    document.getElementById("loginstudent").style.display = "flex";
 
     if (loginFormStudent) {
         loginFormStudent.addEventListener("submit", async function (event) {
@@ -16,7 +16,7 @@ document.getElementById("loginstudent").style.display = "flex";
             }
 
             try {
-                const response = await fetch("http://localhost:3000/auth/login", {
+                const response = await fetch(`${API_BASE_URL}/auth/login`, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ email, password, role: "aluno" }) // Inclui role para validação

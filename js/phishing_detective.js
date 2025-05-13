@@ -85,9 +85,9 @@ function iniciarPhishingDetective() {
 
     async function terminarJogo() {
         const token = localStorage.getItem("token");
-    
+
         try {
-            await fetch("http://localhost:3000/games/score/", {
+            await fetch(`${API_BASE_URL}/games/score/`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -99,14 +99,12 @@ function iniciarPhishingDetective() {
                     jogo_id: 1
                 })
             });
-    
+
             if (typeof loadStats === "function") loadStats();
-    
-            // Determinar feedback com base na pontuação
+
             let mensagemFinal = "";
-            const perguntasTotais = 3;
             const acertos = pontuacaoTotal / 100;
-    
+
             if (acertos === 0) {
                 mensagemFinal = "Tenta novamente! O phishing apanhou-te desta vez. 🕳️";
             } else if (acertos === 1) {
@@ -116,7 +114,7 @@ function iniciarPhishingDetective() {
             } else {
                 mensagemFinal = "Boa! Já és um detetive do phishing 🕵️‍♂️";
             }
-    
+
             gameContainer.innerHTML = `
                 <div class="game-section">
                     <h2>Fim do Jogo!</h2>
@@ -129,7 +127,6 @@ function iniciarPhishingDetective() {
             console.error("Erro ao guardar pontuação:", err);
         }
     }
-    
 
     mostrarPergunta();
 }

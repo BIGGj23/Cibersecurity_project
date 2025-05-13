@@ -1,8 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
-    // Inicialmente, esconde o modal
     document.getElementById("joinClassModal").style.display = "none";
 
-    // Adiciona botão de logout dinamicamente ao header
     const header = document.querySelector(".dashboard-header");
     const logoutBtn = document.createElement("button");
     logoutBtn.classList.add("logout-btn");
@@ -10,7 +8,6 @@ document.addEventListener("DOMContentLoaded", function () {
     logoutBtn.addEventListener("click", logout);
     header.appendChild(logoutBtn);
 
-    // Captura o formulário e adiciona o evento de submissão
     const joinClassForm = document.getElementById("joinClassForm");
     if (joinClassForm) {
         joinClassForm.addEventListener("submit", function (event) {
@@ -19,19 +16,16 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // Evento de clique para abrir o modal
     const joinClassBtn = document.querySelector(".join-class-btn");
     if (joinClassBtn) {
         joinClassBtn.addEventListener("click", openJoinClassModal);
     }
 
-    // Evento de clique para fechar o modal
     const closeModalBtn = document.querySelector(".close-button");
     if (closeModalBtn) {
         closeModalBtn.addEventListener("click", closeJoinClassModal);
     }
 
-    // Adiciona eventos para alternar entre as abas
     const tabButtons = document.querySelectorAll(".tab-button");
     tabButtons.forEach(button => {
         button.addEventListener("click", function () {
@@ -39,10 +33,9 @@ document.addEventListener("DOMContentLoaded", function () {
             showTab(tabName);
         });
     });
-    
-    // Carrega os jogos ao abrir a página (aba inicial)
+
     loadGames();
-    loadStats(); // Carrega as estatísticas do aluno
+    loadStats();
 });
 
 function openJoinClassModal() {
@@ -71,24 +64,17 @@ function showTab(tabName) {
     const tabButton = document.querySelector(`.tab-button[data-tab="${tabName}"]`);
     if (tabButton) tabButton.classList.add("active");
 
-    // Carrega dados conforme a aba
-    if (tabName === "games") {
-        loadGames();
-    } else if (tabName === "materials") {
-        loadMaterials();
-    } else if (tabName === "classes") {
-        loadClasses();
-    }
+    if (tabName === "games") loadGames();
+    else if (tabName === "materials") loadMaterials();
+    else if (tabName === "classes") loadClasses();
 }
 
 async function loadStats() {
     const token = localStorage.getItem("token");
 
     try {
-        const response = await fetch("http://localhost:3000/classes/student/stats", {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
+        const response = await fetch(`${API_BASE_URL}/classes/student/stats`, {
+            headers: { Authorization: `Bearer ${token}` }
         });
 
         const data = await response.json();
@@ -102,30 +88,17 @@ async function loadStats() {
     }
 }
 
-
 function loadClasses() {
-    console.log("CHAMOU loadClasses()");
-
     const token = localStorage.getItem("token");
-    if (!token) {
-        console.error("Token não encontrado.");
-        return;
-    }
+    if (!token) return;
 
-    fetch("http://localhost:3000/classes/student", {
-        headers: {
-            "Authorization": `Bearer ${token}`
-        }
+    fetch(`${API_BASE_URL}/classes/student`, {
+        headers: { "Authorization": `Bearer ${token}` }
     })
-    .then(response => response.json())
+    .then(res => res.json())
     .then(data => {
-        console.log("Resposta da API:", data);
-
         const classList = document.getElementById("class-list");
-        if (!classList) {
-            console.error("Elemento #class-list não encontrado.");
-            return;
-        }
+        if (!classList) return;
 
         classList.innerHTML = "";
 
@@ -142,8 +115,6 @@ function loadClasses() {
 }
 
 function adicionarTurmaAoFrontend(turma) {
-    console.log("Adicionando turma:", turma);
-
     const turmaCard = document.createElement("div");
     turmaCard.classList.add("turma-card");
 
@@ -156,34 +127,23 @@ function adicionarTurmaAoFrontend(turma) {
     if (classList) classList.appendChild(turmaCard);
 }
 
-
 function loadGames() {
     const token = localStorage.getItem("token");
-    if (!token) {
-        console.error("Token não encontrado. Redirecionando...");
-        window.location.href = "student_login.html";
-        return;
-    }
+    if (!token) return;
 
     const gameList = document.getElementById("game-list");
     const gameContainer = document.getElementById("game-container");
 
-    if (!gameList || !gameContainer) {
-        console.warn("Elementos 'game-list' ou 'game-container' não encontrados.");
-        return;
-    }
+    if (!gameList || !gameContainer) return;
 
     gameList.innerHTML = "";
     gameContainer.innerHTML = "";
     gameContainer.style.display = "none";
 
-    fetch("http://localhost:3000/classes/games", {
+    fetch(`${API_BASE_URL}/classes/games`, {
         headers: { Authorization: `Bearer ${token}` }
     })
-    .then(response => {
-        if (!response.ok) throw new Error(`Erro na requisição: ${response.status}`);
-        return response.json();
-    })
+    .then(res => res.json())
     .then(data => {
         const games = data.jogos;
 
@@ -206,33 +166,28 @@ function loadGames() {
             gameCard.querySelector(".start-btn").addEventListener("click", () => {
                 gameList.parentElement.style.display = "none";
                 gameContainer.style.display = "block";
-                gameContainer.innerHTML = ""; // Limpa o anterior
+                gameContainer.innerHTML = "";
 
                 switch (game.id) {
-                    case 1: // Phishing Detective
-                        gameContainer.innerHTML = "";
-                        const scriptPhishing = document.createElement('script');
-                        scriptPhishing.src = 'js/phishing_detective.js';
-                        scriptPhishing.onload = () => iniciarPhishingDetective();
-                        document.body.appendChild(scriptPhishing);
+                    case 1:
+                        const script1 = document.createElement("script");
+                        script1.src = "js/phishing_detective.js";
+                        script1.onload = () => iniciarPhishingDetective();
+                        document.body.appendChild(script1);
                         break;
-                    case 2: // Password Master
-                            gameContainer.innerHTML = `
-                            <div id="password-master" class="game-section">
-                                <h2>Password Master</h2>
-                                <p>Tenta criar uma password segura!</p>
-                                <input type="text" id="passwordInput" placeholder="Insere a tua password" />
-                                <button id="checkPasswordBtn">Verificar Password</button>
-                                <p id="passwordResult"></p>
-                                <p>Pontuação: <span id="passwordPoints">0</span></p>
-                            </div>
-                        `;
-                        
-                        const script = document.createElement('script');
-                        script.src = 'js/password_master.js';
-                        script.onload = () => iniciarPasswordMaster(); // chama a função quando o script estiver carregado
-                        document.body.appendChild(script);
-                
+
+                    case 2:
+                        const script2 = document.createElement("script");
+                        script2.src = "js/password_master.js";
+                        script2.onload = () => iniciarPasswordMaster();
+                        document.body.appendChild(script2);
+                        break;
+
+                    case 3:
+                        const script3 = document.createElement("script");
+                        script3.src = "js/malware_hunter.js";
+                        script3.onload = () => iniciarMalwareHunter();
+                        document.body.appendChild(script3);
                         break;
 
                     default:
@@ -244,33 +199,23 @@ function loadGames() {
             gameList.appendChild(gameCard);
         });
     })
-    .catch(error => {
-        console.error("Erro ao carregar jogos:", error);
+    .catch(err => {
+        console.error("Erro ao carregar jogos:", err);
         gameList.innerHTML = "<p>Não foi possível carregar os jogos.</p>";
     });
 }
 
-
 function loadMaterials() {
     const token = localStorage.getItem("token");
-    if (!token) {
-        console.error("Token não encontrado no localStorage. Faça login novamente.");
-        window.location.href = "student_login.html";
-        return;
-    }
-
     const materialList = document.getElementById("material-list");
-    materialList.innerHTML = ""; // Limpa o conteúdo anterior
+    if (!materialList) return;
 
-    fetch("http://localhost:3000/classes/materials", {
+    materialList.innerHTML = "";
+
+    fetch(`${API_BASE_URL}/classes/materials`, {
         headers: { "Authorization": `Bearer ${token}` }
     })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error(`Erro na requisição: ${response.status} ${response.statusText}`);
-        }
-        return response.json();
-    })
+    .then(res => res.json())
     .then(materials => {
         if (!Array.isArray(materials) || materials.length === 0) {
             materialList.innerHTML = "<p>Nenhum material disponível.</p>";
@@ -287,40 +232,10 @@ function loadMaterials() {
             });
         }
     })
-    .catch(error => {
-        console.error("Erro ao carregar materiais:", error);
-        materialList.innerHTML = "<p>Não foi possível carregar os materiais. Verifique sua conexão ou o token.</p>";
+    .catch(err => {
+        console.error("Erro ao carregar materiais:", err);
+        materialList.innerHTML = "<p>Erro ao carregar materiais.</p>";
     });
-}
-
-function adicionarTurmaAoFrontend(turma) {
-    const classList = document.getElementById("class-list");
-
-    const classCard = document.createElement("div");
-    classCard.classList.add("class-card");
-
-    const numeroAlunos = turma.numero_alunos !== undefined ? turma.numero_alunos : "0";
-    const mediaPontuacao = turma.media_pontuacao !== undefined ? turma.media_pontuacao : "N/A";
-
-    classCard.innerHTML = `
-        <h2>${turma.nome}</h2>
-        <p><strong>Código:</strong> ${turma.codigo_acesso}</p>
-        <p><strong>Nº Alunos:</strong> ${numeroAlunos}</p>
-        <p><strong>Média Pontuação:</strong> ${mediaPontuacao}%</p>
-    `;
-
-    classCard.addEventListener('click', () => mostrarDetalhesTurma(turma));
-    classList.appendChild(classCard);
-}
-
-function mostrarDetalhesTurma(turma) {
-    document.getElementById("detailClassName").textContent = turma.nome;
-    document.getElementById("selectedClassCode").textContent = turma.codigo_acesso;
-    document.getElementById("selectedClassStudents").textContent = turma.numero_alunos !== undefined ? turma.numero_alunos : "0";
-    document.getElementById("selectedClassScore").textContent = turma.media_pontuacao !== undefined ? turma.media_pontuacao : "N/A";
-
-    const detailsDiv = document.getElementById("classDetailsContainer");
-    detailsDiv.style.display = "block";
 }
 
 function joinClass() {
@@ -338,7 +253,7 @@ function joinClass() {
         return;
     }
 
-    fetch("http://localhost:3000/classes/join", {
+    fetch(`${API_BASE_URL}/classes/join`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -346,17 +261,12 @@ function joinClass() {
         },
         body: JSON.stringify({ codigo_acesso: classCode })
     })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error(`Erro na requisição: ${response.status} ${response.statusText}`);
-        }
-        return response.json();
-    })
+    .then(res => res.json())
     .then(data => {
         if (data.success) {
             alert(data.message);
             closeJoinClassModal();
-            loadClasses(); // Recarrega as turmas após entrar
+            loadClasses();
         } else {
             const errorMessage = document.getElementById("errorMessage");
             if (errorMessage) {
@@ -371,16 +281,15 @@ function joinClass() {
         console.error("Erro ao entrar na turma:", error);
         const errorMessage = document.getElementById("errorMessage");
         if (errorMessage) {
-            errorMessage.textContent = "Não foi possível entrar na turma. Verifique sua conexão ou o token.";
+            errorMessage.textContent = "Não foi possível entrar na turma.";
             errorMessage.style.display = "block";
         } else {
-            alert("Não foi possível entrar na turma. Verifique sua conexão ou o token.");
+            alert("Não foi possível entrar na turma.");
         }
     });
 }
 
 function logout() {
-    localStorage.removeItem("token");
-    localStorage.removeItem("aluno_id");
+    localStorage.clear();
     window.location.href = "index.html";
 }

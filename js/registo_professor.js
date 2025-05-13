@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
     const registerFormTeacher = document.getElementById("registerFormTeacher");
-document.getElementById("registerTeacher").style.display = "flex";
+    document.getElementById("registerTeacher").style.display = "flex";
 
     if (registerFormTeacher) {
         registerFormTeacher.addEventListener("submit", async function (event) {
@@ -71,7 +71,7 @@ document.getElementById("registerTeacher").style.display = "flex";
 
             try {
                 // Enviar os dados para o backend
-                const response = await fetch("http://localhost:3000/auth/register", {
+                const response = await fetch(`${API_BASE_URL}/auth/register`, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ name: fullName, email, password, role })
