@@ -124,8 +124,9 @@ body {
 /* Grid de cards */
 .card-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 20px;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 24px;
+    padding: 24px 40px;
 }
 
 /* Cards genéricos */
@@ -537,7 +538,8 @@ body {
     background-color: #9b59b6;
   }
   .material-scroll {
-    max-height: 400px;
+    max-height: auto;
+    margin: 0 auto;
     overflow-y: auto;
     background-color: #101c2a;
     padding: 30px 40px;

@@ -4,6 +4,7 @@
     padding: 0;
     box-sizing: border-box;
     font-family: Arial, sans-serif;
+    overflow-y: auto;
 }
 
 body {
@@ -477,7 +478,8 @@ body {
     }
 
     .material-scroll {
-        max-height: 400px;
+        max-height: auto;
+        margin: 0 auto;
         overflow-y: auto;
         background-color: #101c2a;
         padding: 30px 40px;
