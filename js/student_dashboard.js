@@ -342,56 +342,93 @@ function loadMaterials() {
 
   const materiais ={
     password: {
-      titulo: "Como criar uma password segura?",
-      conteudo: `
-        <h3>O que é uma password segura?</h3>
-        <ul>
-          <li>Pelo menos 8 caracteres</li>
-          <li>Letras maiúsculas, minúsculas, números e símbolos</li>
-          <li>Evita nomes, datas e palavras óbvias</li>
-        </ul>
-        <h3>Boas práticas</h3>
-        <ul>
-          <li>Não reutilizar senhas</li>
-          <li>Usar gestores de palavras-passe</li>
-          <li>Atualizar senhas regularmente</li>
-        </ul>
-      `
+        titulo: "Como criar uma password segura?",
+        conteudo: `
+          <h3>Como criar uma palavra-passe segura?</h3>
+          <p>Palavras-passes fortes são sua primeira linha de defesa.</p>
+          <ul>
+            <li>Use pelo menos 8 caracteres</li>
+            <li>Combine letras maiúsculas/minúsculas, números e caracteres especiais (ex: Seguro/*123)</li>
+            <li>Nunca compartilhe suas senhas com ninguém</li>
+            <li>Evite usar a mesma senha para diferentes contas</li>
+            <li>Use autenticação de dois fatores (2FA) quando disponível</li>
+          </ul>
+          <p><strong>Exemplo:</strong> 'Senha123' é fraca, enquanto 'A1/b2C*3d4' é melhor. <strong>NUNCA</strong> use seu nome ou data de nascimento.</p>
+          <p>Em caso de dúvida, use um gerador de palavras-passes. Para contas seguras, sempre prefira palavras-passes únicas e complexas.</p>
+        `
     },
+
     phishing: {
-      titulo: "Como detetar um phishing?",
-      conteudo: `
-        <h3>Sinais de alerta:</h3>
-        <ul>
-          <li>Remetente desconhecido ou suspeito</li>
-          <li>Links com domínios falsos ou estranhos</li>
-          <li>Urgência no pedido (ex: “responda já”)</li>
-        </ul>
-        <h3>Boas práticas:</h3>
-        <ul>
-          <li>Não clicar em links suspeitos</li>
-          <li>Confirmar URLs manualmente</li>
-          <li>Ativar autenticação de dois fatores</li>
-        </ul>
-      `
+        titulo: "Como detetar um phishing?",
+        conteudo: `
+          <h3>Conscientização sobre Phishing</h3>
+          <p>Como identificar tentativas de phishing:</p>
+          <ul>
+            <li>Sempre verifique o endereço de e-mail completo do remetente (suspeito? Não confie!)</li>
+            <li>Fique atento a domínios com erros ortográficos (ex: amazzon.com, microsoflt.com)</li>
+            <li>Não clique em links ou anexos suspeitos</li>
+            <li>Empresas legítimas entrarão em contato com você usando seus canais oficiais</li>
+            <li>Nunca forneça informações sensíveis quando solicitado inesperadamente</li>
+          </ul>
+        `
     },
+
     malware: {
-      titulo: "Como descobrir um malware?",
-      conteudo: `
-        <h3>Sintomas de malware:</h3>
-        <ul>
-          <li>Computador lento sem motivo</li>
-          <li>Programas ou janelas estranhas</li>
-          <li>Redirecionamentos para sites desconhecidos</li>
-        </ul>
-        <h3>Como te proteger:</h3>
-        <ul>
-          <li>Usar antivírus confiável</li>
-          <li>Evitar downloads suspeitos</li>
-          <li>Atualizar o sistema regularmente</li>
-        </ul>
-      `
+        titulo: "Como descobrir um malware?",
+        conteudo: `
+    <h3>Prevenção de Malware</h3>
+    <p>Malware é software malicioso criado para causar dano, roubar dados ou pedir resgate. Conheça a teoria para responder ao jogo 'Malware Hunter':</p>
+    
+    <h4>Tipos de malware e conceitos importantes:</h4>
+    <ul>
+      <li><strong>Vírus/Spyware/Keylogger/Trojan:</strong> Programas que entram disfarçados ou se instalam sem você perceber. Keyloggers registram tudo que você digita!</li>
+      <li><strong>Ransomware:</strong> Sequestro digital. Criptografa seus arquivos e pede pagamento (nunca pague — prefira restaurar backup).</li>
+      <li><strong>Cryptojacker:</strong> Usa seu computador para minerar criptomoedas em segredo, sem pedir permissão.</li>
+      <li><strong>PUP (Potentially Unwanted Program):</strong> Softwares não necessariamente maliciosos, mas que mostram anúncios ou coletam dados indesejados.</li>
+      <li><strong>Phishing:</strong> E-mails falsos tentando roubar seus dados ou instalar malware — sempre verifique remetente e links!</li>
+    </ul>
+
+    <h4>Como o malware entra no sistema?</h4>
+    <ul>
+      <li><strong>Abrindo anexos suspeitos de e-mails</strong> (ex: invoice.exe)</li>
+      <li><strong>Baixando ou executando arquivos desconhecidos</strong></li>
+      <li><strong>Clicando em links sem verificar a autenticidade</strong></li>
+      <li><strong>Usando software pirata/crackeado</strong></li>
+    </ul>
+
+    <h4>Como se proteger e boas práticas:</h4>
+    <ul>
+      <li>Nunca abra anexos .exe ou arquivos suspeitos por e-mail</li>
+      <li><strong>Atualize sempre</strong> o sistema e apps contra falhas exploradas por malware</li>
+      <li>Faça backup regular dos seus arquivos importantes</li>
+      <li>Mantenha o antivírus ativo e atualizado</li>
+      <li>Use uma firewall ativa para bloquear acessos não autorizados</li>
+      <li><strong>Ao suspeitar de infecção:</strong> Desconecte da Internet rapidamente</li>
+    </ul>
+
+    <h4>O que fazer em situações comuns:</h4>
+    <ul>
+      <li>Recebeu e-mail estranho com .exe? <strong>Excluir sem abrir!</strong></li>
+      <li>Baixou arquivo suspeito? <strong>Excluir imediatamente e rodar o antivírus</strong></li>
+      <li>PC lento com programas estranhos? <strong>Pode ser infecção por malware</strong></li>
+      <li>Antivírus alertou sobre PUP? Leia com atenção: nem sempre é perigoso</li>
+      <li>Exemplo de malware: <strong>Trojan disfarçado de app legítimo</strong></li>
+      <li>O que ransomware faz? <strong>Criptografa arquivos e pede pagamento</strong></li>
+      <li>Recebeu phishing? <strong>Nunca informe dados pessoais</strong></li>
+      <li>Suspeita de infecção? <strong>Primeiro passo: desconectar da rede/Internet</strong></li>
+    </ul>
+
+    <h4>Conceitos úteis:</h4>
+    <ul>
+      <li><strong>Sandbox:</strong> usado por analistas para isolar e analisar malware</li>
+      <li><strong>Polimorfismo:</strong> vírus que mudam seu código para evitar detecção</li>
+      <li><strong>Cryptojacker:</strong> malware de mineração instalado sem consentimento</li>
+    </ul>
+
+    <p><strong>Em resumo:</strong> mantenha tudo atualizado, desconfie sempre, evite abrir arquivos e links desconhecidos, tenha backups — e nunca pague resgate!</p>
+  `
     }
+
   };
 
   // Função para iniciar o material
