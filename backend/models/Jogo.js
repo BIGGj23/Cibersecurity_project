@@ -12,12 +12,21 @@ module.exports = (sequelize, DataTypes) => {
         descricao: {
             type: DataTypes.TEXT,
             allowNull: true
+        },
+        nivel: {
+            type: DataTypes.STRING(20),
+            allowNull: false
+        },
+        pontos: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            defaultValue: 0
         }
     }, {
         timestamps: true,
         tableName: 'jogos',
         createdAt: 'criado_em',
-        updatedAt: false // Não tem `updated_at` na DB
+        updatedAt: false
     });
 
     return Jogo;
