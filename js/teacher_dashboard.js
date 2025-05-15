@@ -1,3 +1,25 @@
+
+function formatarNivel(nivel) {
+    if (!nivel || typeof nivel !== "string") {
+        return { label: "Nível não definido", classe: "" };
+    }
+
+    const normalizado = nivel.trim().toLowerCase();
+
+    switch (normalizado) {
+        case "beginner":
+        case "iniciante":
+            return { label: "Iniciante", classe: "iniciante" };
+        case "intermedio":
+        case "intermedio":
+            return { label: "Intermedio", classe: "intermedio" };
+        case "avancado":
+        case "avançado":
+            return { label: "Avançado", classe: "avancado" };
+        default:
+            return { label: nivel.charAt(0).toUpperCase() + nivel.slice(1).toLowerCase(), classe: "" };
+    }
+}
 document.addEventListener("DOMContentLoaded", async function () {
     const token = localStorage.getItem("token");
     localStorage.setItem("tipo", "professor");
@@ -149,11 +171,12 @@ function loadGames() {
     .then(res => res.json())
     .then(data => {
         data.jogos.forEach(game => {
+            const nivelFormatado = formatarNivel(game.nivel);
             const card = document.createElement("div");
-            card.classList.add("game-card");
+            const { label, classe } = formatarNivel(game.nivel);
             card.innerHTML = `
                 <h2>${game.titulo}</h2>
-                <span class="level ${game.nivel}">${game.nivel}</span>
+                <span class="level ${classe}">${label}</span>
                 <p>${game.descricao}</p>
                 <button class="start-btn" data-id="${game.id}">Start Game</button>
             `;

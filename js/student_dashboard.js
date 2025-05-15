@@ -1,3 +1,26 @@
+
+function formatarNivel(nivel) {
+    if (!nivel || typeof nivel !== "string") {
+        return { label: "Nível não definido", classe: "" };
+    }
+
+    const normalizado = nivel.trim().toLowerCase();
+
+    switch (normalizado) {
+        case "beginner":
+        case "iniciante":
+            return { label: "Iniciante", classe: "iniciante" };
+        case "intermedio":
+        case "intermédio":
+            return { label: "Intermedio", classe: "intermedio" };
+        case "avancado":
+        case "avançado":
+            return { label: "Avançado", classe: "avancado" };
+        default:
+            return { label: nivel.charAt(0).toUpperCase() + nivel.slice(1).toLowerCase(), classe: "" };
+    }
+}
+
 document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("joinClassModal").style.display = "none";
 
@@ -155,13 +178,16 @@ function loadGames() {
         games.forEach(game => {
             const gameCard = document.createElement("div");
             gameCard.classList.add("game-card");
+            const { label, classe } = formatarNivel(game.nivel);
+
             gameCard.innerHTML = `
                 <h2>${game.titulo || "Jogo Sem Nome"}</h2>
-                <span class="level ${game.nivel || 'beginner'}">${game.nivel || 'beginner'}</span>
+                <span class="level ${classe}">${label}</span>
                 <p>${game.descricao || "Descrição não disponível"}</p>
                 <p class="points">Points: ${game.pontos || 0}</p>
                 <button class="start-btn" data-game-id="${game.id}">Start Game</button>
             `;
+
 
             gameCard.querySelector(".start-btn").addEventListener("click", () => {
                 gameList.parentElement.style.display = "none";
@@ -427,7 +453,7 @@ function loadMaterials() {
 
     <p><strong>Em resumo:</strong> mantenha tudo atualizado, desconfie sempre, evite abrir arquivos e links desconhecidos, tenha backups — e nunca pague resgate!</p>
   `
-    }
+}
 
   };
 
