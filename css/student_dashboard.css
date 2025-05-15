@@ -127,7 +127,9 @@ body {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 20px;
-}
+    padding: 20px;
+    justify-content: center;
+  }
 
 /* Cards genéricos */
 .game-card, .material-card, .class-card {
@@ -532,4 +534,26 @@ body {
       .btn-voltar:hover {
         background-color: #1e2a38;
         color: #ffffff;
+      }
+      .level {
+        padding: 4px 8px;
+        border-radius: 6px;
+        font-weight: bold;
+        border: 2px solid transparent;
+        display: inline-block;
+      }
+      
+      .level.iniciante {
+        border-color: #28a745; /* verde */
+        color: #28a745;
+      }
+      
+      .level.intermedio {
+        border-color: #ffc107; /* amarelo */
+        color: #ffc107;
+      }
+      
+      .level.avancado {
+        border-color: #dc3545; /* vermelho */
+        color: #dc3545;
       }

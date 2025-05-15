@@ -124,62 +124,40 @@ body {
 /* Grid de cards */
 .card-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 24px;
-    padding: 24px 40px;
-}
-
-/* Cards genéricos */
-.game-card, .material-card, .class-card {
-    background-color: #FFFFFF;
-    border-radius: 8px;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
     padding: 20px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    color: #1A252F;
-    transition: transform 0.2s;
-}
+    justify-content: center;
+  }
 
-.game-card:hover, .material-card:hover, .class-card:hover {
-    transform: translateY(-5px);
-}
+/* Cards de jogos */
 
-.game-card h2, .material-card h2, .class-card h2 {
-    font-size: 18px;
-    font-weight: bold;
-    margin-bottom: 10px;
-}
-
-.game-card p, .material-card p, .class-card p {
-    font-size: 14px;
-    color: #6B7280;
-    margin-bottom: 10px;
-}
-
-/* Níveis (Beginner, Intermediate, Advanced) */
-.game-card .level, .material-card .level {
-    display: inline-block;
-    padding: 4px 8px;
-    border-radius: 12px;
-    font-size: 12px;
-    margin-bottom: 10px;
-    text-transform: uppercase;
-}
-
-.game-card .level.beginner, .material-card .level.beginner {
-    background-color: #D4EDDA;
-    color: #155724;
-}
-
-.game-card .level.intermediate, .material-card .level.intermediate {
-    background-color: #FFF3CD;
-    color: #856404;
-}
-
-.game-card .level.advanced, .material-card .level.advanced {
-    background-color: #F8D7DA;
-    color: #721C24;
-}
-
+/* Estilo visual do cartão */
+.game-card {
+    background-color: #fff;
+    color: #ffffff;
+    border-radius: 10px;
+    padding: 20px 24px;
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    max-width: 700px;
+    border: 1px solid #2c3e50;
+  }
+  
+  /* Título do jogo */
+  .game-card h2 {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    color: #a3bffa;
+  }
+  
+  /* Parágrafos dentro do card */
+  .game-card p {
+    font-size: 15px;
+    margin-bottom: 12px;
+    color: #e0e6ed;
+  }
 /* Pontos nos jogos */
 .game-card .points {
     font-size: 14px;
@@ -188,22 +166,21 @@ body {
 }
 
 /* Botão "Start Game" */
-.game-card .start-btn {
-    background-color: #2D3B45;
-    color: #E5E7EB;
+.start-btn {
+    margin-top: 10px;
+    padding: 6px 14px;
+    background-color: #fff;
+    color: #1A252F;
     border: none;
-    padding: 8px 16px;
-    border-radius: 4px;
+    border-radius: 6px;
+    font-weight: bold;
     cursor: pointer;
-    font-size: 14px;
-    transition: background-color 0.3s;
-    width: 100%;
-    text-align: center;
-}
-
-.game-card .start-btn:hover {
-    background-color: #3B4A56;
-}
+    transition: background-color 0.2s ease;
+  }
+  
+  .start-btn:hover {
+    background-color: #FFFFFF;
+  }
 
 /* Estilo específico pra turmas (sem botão "Start Game") */
 .class-card p strong {
@@ -593,5 +570,27 @@ body {
         background-color: #1e2a38;
         color: #ffffff;
       }
-  
-  
+      .level {
+        padding: 4px 8px;
+        border-radius: 6px;
+        font-weight: bold;
+        border: 2px solid transparent;
+        display: inline-block;
+      }
+      
+      /* Estilo de níveis com rebordos coloridos */
+.level.iniciante {
+    border-color: #28a745;
+    color: #28a745;
+}
+
+.level.intermedio {
+    border-color: #ffc107;
+    color: #ffc107;
+}
+
+.level.avancado {
+    border-color: #dc3545;
+    color: #dc3545;
+}
+       
