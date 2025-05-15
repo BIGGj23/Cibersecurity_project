@@ -55,7 +55,7 @@ app.use((req, res) => {
 sequelize.authenticate()
     .then(() => {
         console.log('✅ Conectado ao PostgreSQL com Sequelize!');
-        return sequelize.sync({ alter: true });
+        return sequelize.sync();
     })
     .then(() => {
         console.log('✅ Modelos sincronizados com sucesso!');
