@@ -1,6 +1,5 @@
 const { Turma, Utilizador, Jogo, TurmaAluno, PontuacaoJogo } = require('../models/associations');
 
-
 // Criar uma nova turma
 const createClass = async (req, res) => {
     try {
@@ -75,7 +74,7 @@ const joinClass = async (req, res) => {
 
         const existingEnrollment = await TurmaAluno.findOne({
             where: { aluno_id: studentId, turma_id: turma.id }
-        });        
+        });
 
         if (existingEnrollment) {
             return res.status(400).json({ success: false, message: 'Já estás inscrito nesta turma.' });
@@ -90,10 +89,12 @@ const joinClass = async (req, res) => {
     }
 };
 
-// Listar todos os jogos disponíveis
+// ✅ Listar todos os jogos disponíveis (corrigido)
 const getGames = async (req, res) => {
     try {
-        const jogos = await Jogo.findAll();
+        const jogos = await Jogo.findAll({
+            attributes: ['id', 'titulo', 'descricao', 'nivel', 'pontos']
+        });
         res.json({ success: true, jogos });
     } catch (error) {
         console.error('❌ Erro ao listar jogos:', error);
@@ -131,26 +132,21 @@ const getStudentStats = async (req, res) => {
     }
 };
 
-
 const getLearningMaterials = async (req, res) => {
     try {
-        // Exemplo de dados simulados — depois podes guardar na base de dados
         const materials = [
             { title: "Segurança em Redes", level: "beginner", description: "Aprende conceitos básicos de segurança em redes." },
             { title: "Criptografia", level: "intermediate", description: "Como proteger dados com técnicas de criptografia." },
             { title: "Pentesting", level: "advanced", description: "Teste a segurança de sistemas como um profissional." }
         ];
 
-        res.json(materials); // <- aqui podes manter simples e direto
+        res.json(materials);
     } catch (error) {
         console.error("Erro ao carregar materiais:", error);
         res.status(500).json({ error: "Erro ao carregar materiais." });
     }
 };
 
-
-
-// Export único com todas as funções organizadas
 module.exports = {
     createClass,
     getClasses,
@@ -159,5 +155,4 @@ module.exports = {
     getGames,
     getStudentStats,
     getLearningMaterials
-
 };
