@@ -12,12 +12,16 @@ body {
     color: #E5E7EB;
     min-height: 100vh;
     padding: 20px;
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 
 /* Container principal */
 .dashboard-container {
     max-width: 1200px;
     margin: 0 auto;
+    height: auto;
+    overflow: visible;
 }
 
 /* Header */
@@ -110,6 +114,8 @@ body {
 .tab-content {
     display: none;
     padding: 20px 0;
+    height: auto;
+    overflow: visible; 
 }
 
 .tab-content.active {
@@ -132,7 +138,7 @@ body {
   }
 
 /* Cards genéricos */
-.game-card, .material-card, .class-card {
+.game-card, .material-card{
     background-color: #FFFFFF;
     border-radius: 8px;
     padding: 20px;
@@ -141,20 +147,65 @@ body {
     transition: transform 0.2s;
 }
 
-.game-card:hover, .material-card:hover, .class-card:hover {
+.game-card:hover, .material-card:hover {
     transform: translateY(-5px);
 }
 
-.game-card h2, .material-card h2, .class-card h2 {
+.game-card h2, .material-card h2 {
     font-size: 18px;
     font-weight: bold;
     margin-bottom: 10px;
 }
 
-.game-card p, .material-card p, .class-card p {
+.game-card p, .material-card p{
     font-size: 14px;
     color: #6B7280;
     margin-bottom: 10px;
+}
+
+/* Cards das turmas */
+.class-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: start;
+    padding-top: 20px;
+    overflow: visible;
+    height: auto;
+}
+
+
+.class-card {
+    background-color: #ffffff;
+    color: #1f2a37;
+    border-radius: 10px;
+    padding: 20px;
+    width: 280px; /* Largura fixa, como no professor */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease-in-out;
+}
+
+.class-card:hover {
+    transform: scale(1.03);
+}
+
+.class-card h3 {
+    margin-top: 0;
+    font-size: 20px;
+    font-weight: 600;
+    color: #1f2a37;
+}
+
+.class-card p {
+    margin: 6px 0;
+    font-size: 14px;
+    color: #3b3b3b;
+    word-wrap: break-word; 
+    overflow-wrap: break-word; 
+}
+
+.class-card p strong {
+    color: #1f2a37;
 }
 
 /* Níveis (Beginner, Intermediate, Advanced) */
@@ -418,14 +469,14 @@ body {
     padding: 20px;
     border-radius: 8px;
     margin-top: 20px;
-  }
+}
   
-  .game-section h2 {
+.game-section h2 {
     text-align: center;
     margin-bottom: 10px;
-  }
+}
   
-  .badge-level {
+.badge-level {
     background-color: #34495e;
     color: #ecf0f1;
     padding: 5px 10px;
@@ -433,16 +484,16 @@ body {
     font-size: 0.9em;
     display: inline-block;
     margin-bottom: 15px;
-  }
+}
   
-  #respostas {
+#respostas {
     display: flex;
     flex-direction: column;
     gap: 10px;
     margin: 20px 0;
-  }
+}
   
-  .jogo-btn {
+.jogo-btn {
     background-color: #1e2a38;
     color: white;
     border: none;
@@ -451,19 +502,19 @@ body {
     cursor: pointer;
     border-radius: 6px;
     transition: 0.3s;
-  }
+}
   
-  .jogo-btn:hover {
+.jogo-btn:hover {
     background-color: #1e2a38;
-  }
+}
   
-  #feedback {
+#feedback {
     font-weight: bold;
     margin-top: 10px;
     min-height: 24px;
-  }
+}
   
-  .next-btn {
+.next-btn {
     margin-top: 20px;
     background-color: #1e2a38;
     color: white;
@@ -473,13 +524,13 @@ body {
     border-radius: 6px;
     cursor: pointer;
     transition: background-color 0.3s ease;
-  }
+}
   
-  .next-btn:hover {
+.next-btn:hover {
     background-color: #1e2a38;
-    }
+}
 
-    .material-scroll {
+.material-scroll {
         max-height: auto;
         margin: 0 auto;
         overflow-y: auto;
@@ -489,35 +540,35 @@ body {
         color: #f1f1f1;
         line-height: 1.6;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-      }
+}
       
-      .material-scroll h2 {
+.material-scroll h2 {
         font-size: 26px;
         color: #7aa5ff;
         margin-bottom: 25px;
-      }
+}
       
-      .material-scroll h3 {
+.material-scroll h3 {
         font-size: 20px;
         color: #ffffff;
         margin-top: 20px;
         margin-bottom: 10px;
         border-bottom: 2px solid #2f5aaa;
         padding-bottom: 5px;
-      }
+}
       
-      .material-scroll ul {
+.material-scroll ul {
         padding-left: 20px;
         margin-bottom: 20px;
-      }
+}
       
-      .material-scroll ul li {
+.material-scroll ul li {
         margin-bottom: 8px;
         font-size: 15px;
-      }
+}
       
-      .btn-aprender,
-      .btn-voltar {
+.btn-aprender,
+.btn-voltar {
         background-color: #ffffff;
         color: #223f66;
         padding: 8px 16px;
@@ -528,32 +579,39 @@ body {
         cursor: pointer;
         transition: all 0.2s ease-in-out;
         margin-bottom: 20px;
-      }
+}
       
-      .btn-aprender:hover,
-      .btn-voltar:hover {
+.btn-aprender:hover,
+.btn-voltar:hover {
         background-color: #1e2a38;
         color: #ffffff;
-      }
-      .level {
+}
+.level {
         padding: 4px 8px;
         border-radius: 6px;
         font-weight: bold;
         border: 2px solid transparent;
         display: inline-block;
-      }
+}
       
-      .level.iniciante {
+.level.iniciante {
         border-color: #28a745; /* verde */
         color: #28a745;
-      }
+}
       
-      .level.intermedio {
+.level.intermedio {
         border-color: #ffc107; /* amarelo */
         color: #ffc107;
-      }
+}
       
-      .level.avancado {
+.level.avancado {
         border-color: #dc3545; /* vermelho */
         color: #dc3545;
-      }
+}
+.error-message {
+    color: #e74c3c;
+    font-size: 14px;
+    margin-top: 10px;
+    display: none;
+    text-align: center;
+}

@@ -11,12 +11,16 @@ body {
     color: #E5E7EB;
     min-height: 100vh;
     padding: 20px;
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 
 /* Container principal */
 .dashboard-container {
     max-width: 1200px;
     margin: 0 auto;
+    height: auto;
+    overflow: visible;
 }
 
 /* Header */
@@ -109,6 +113,8 @@ body {
 .tab-content {
     display: none;
     padding: 20px 0;
+    height: auto;
+    overflow: visible;
 }
 
 .tab-content.active {
@@ -132,32 +138,58 @@ body {
 
 /* Cards de jogos */
 
-/* Estilo visual do cartão */
+/* Cards de jogos */
 .game-card {
-    background-color: #fff;
-    color: #ffffff;
-    border-radius: 10px;
-    padding: 20px 24px;
-    box-shadow: 0 0 12px rgba(0, 0, 0, 0.2);
-    width: 100%;
-    max-width: 700px;
-    border: 1px solid #2c3e50;
-  }
-  
-  /* Título do jogo */
-  .game-card h2 {
-    font-size: 20px;
-    font-weight: 600;
-    margin-bottom: 12px;
-    color: #a3bffa;
-  }
-  
-  /* Parágrafos dentro do card */
-  .game-card p {
-    font-size: 15px;
-    margin-bottom: 12px;
-    color: #e0e6ed;
-  }
+    background-color: #FFFFFF;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    color: #1A252F;
+    transition: transform 0.2s;
+}
+
+.game-card:hover {
+    transform: translateY(-5px);
+}
+
+.game-card h2 {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #1A252F; /* Título em preto, como no aluno */
+}
+
+.game-card p {
+    font-size: 14px;
+    color: #6B7280; /* Texto secundário em cinza, como no aluno */
+    margin-bottom: 10px;
+}
+
+/* Níveis (Beginner, Intermediate, Advanced) */
+.game-card .level {
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+}
+
+.game-card .level.beginner {
+    background-color: #D4EDDA;
+    color: #155724;
+}
+
+.game-card .level.intermediate {
+    background-color: #FFF3CD;
+    color: #856404;
+}
+
+.game-card .level.advanced {
+    background-color: #F8D7DA;
+    color: #721C24;
+}
+
 /* Pontos nos jogos */
 .game-card .points {
     font-size: 14px;
@@ -166,25 +198,21 @@ body {
 }
 
 /* Botão "Start Game" */
-.start-btn {
-    margin-top: 10px;
-    padding: 6px 14px;
-    background-color: #fff;
-    color: #1A252F;
+.game-card .start-btn {
+    background-color: #2D3B45;
+    color: #E5E7EB;
     border: none;
-    border-radius: 6px;
-    font-weight: bold;
+    padding: 8px 16px;
+    border-radius: 4px;
     cursor: pointer;
-    transition: background-color 0.2s ease;
-  }
-  
-  .start-btn:hover {
-    background-color: #FFFFFF;
-  }
+    font-size: 14px;
+    transition: background-color 0.3s;
+    width: 100%;
+    text-align: center;
+}
 
-/* Estilo específico pra turmas (sem botão "Start Game") */
-.class-card p strong {
-    color: #1A252F;
+.game-card .start-btn:hover {
+    background-color: #3B4A56;
 }
 
 /* Modal */
@@ -414,6 +442,8 @@ body {
     margin: 6px 0;
     font-size: 14px;
     color: #3b3b3b;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 /*-----------botão criar turma------------------*/
 
@@ -593,4 +623,24 @@ body {
     border-color: #dc3545;
     color: #dc3545;
 }
-       
+.error-message {
+    color: #e74c3c;
+    font-size: 14px;
+    margin-top: 10px;
+    display: none;
+    text-align: center;
+}       
+.logout-btn {
+    background-color: #e74c3c;
+    color: #ffffff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s;
+}
+
+.logout-btn:hover {
+    background-color: #c0392b;
+}
