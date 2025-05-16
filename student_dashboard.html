@@ -47,27 +47,26 @@
     <button class="tab-button" data-tab="classes">Minhas Turmas</button>
 </div>
 
-<!-- Conteúdos das abas -->
-<div class="tab-content" id="games">
+<!-- Aba de Jogos -->
+<div id="games" class="tab-content">
     <h2>Jogos</h2>
     <div id="game-list" class="card-grid"></div>
+    <div id="game-container"></div>
 </div>
-<!-- Game container para mostrar o jogo -->
-<div id="game-container" style="display: none;"></div>
 
-<!-- Conteudo materiais aprendizagem-->
-<div class="tab-content" id="materials" style="display:none;">
+<!-- Aba de Materiais -->
+<div id="materials" class="tab-content">
     <h2>Materiais de Aprendizagem</h2>
     <div id="material-list" class="card-grid"></div>
-
-    <div id="material-container" class="material-scroll" style="display: none;">
-    </div>
+    <div id="material-container"></div>
 </div>
 
-<!-- Lista de turmas -->
-<div class="tab-content" id="classes" style="display:none;">
+<!-- Aba de Turmas -->
+<div id="classes" class="tab-content active"> <!-- Tornar esta aba ativa por padrão -->
     <h2>Minhas Turmas</h2>
-    <div id="class-list"></div>
+    <div id="class-list" class="class-grid">
+        <!-- Cards de turmas serão preenchidos via JavaScript -->
+    </div>
 </div>
 
 
