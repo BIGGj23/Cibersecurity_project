@@ -57,14 +57,21 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
+    // Carregar dados iniciais
     loadGames();
     loadStats();
+    loadClasses();
 });
 
 function openJoinClassModal() {
     document.getElementById("joinClassModal").style.display = "block";
     document.querySelector(".modal-overlay").style.display = "block";
     document.getElementById("classCode").value = "";
+    const errorMessage = document.getElementById("errorMessage");
+    if (errorMessage) {
+        errorMessage.textContent = "";
+        errorMessage.style.display = "none";
+    }
 }
 
 function closeJoinClassModal() {
@@ -113,20 +120,38 @@ async function loadStats() {
 
 function loadClasses() {
     const token = localStorage.getItem("token");
-    if (!token) return;
+    if (!token) {
+        console.error("Token não encontrado no localStorage.");
+        const classList = document.getElementById("class-list");
+        if (classList) {
+            classList.innerHTML = "<p>Você precisa estar logado para ver suas turmas.</p>";
+        }
+        return;
+    }
+
+    const classList = document.getElementById("class-list");
+    if (!classList) {
+        console.error("Elemento #class-list não encontrado no DOM.");
+        return;
+    }
+
+    classList.innerHTML = "<p>Carregando turmas...</p>"; // Feedback de carregamento
 
     fetch(`${API_BASE_URL}/classes/student`, {
         headers: { "Authorization": `Bearer ${token}` }
     })
-    .then(res => res.json())
+    .then(res => {
+        if (!res.ok) {
+            throw new Error(`Erro na requisição: ${res.status} - ${res.statusText}`);
+        }
+        return res.json();
+    })
     .then(data => {
-        const classList = document.getElementById("class-list");
-        if (!classList) return;
-
-        classList.innerHTML = "";
+        console.log("Resposta da API /classes/student:", data); // Log para depuração
+        classList.innerHTML = ""; // Limpar mensagem de carregamento
 
         if (!data.turmas || data.turmas.length === 0) {
-            classList.innerHTML = "<p>Você ainda não está em nenhuma turma.</p>";
+            classList.innerHTML = "<p>Você ainda não está em nenhuma turma. Use o botão 'Entrar numa Turma' para se juntar a uma!</p>";
             return;
         }
 
@@ -134,16 +159,19 @@ function loadClasses() {
     })
     .catch(error => {
         console.error("Erro ao buscar turmas:", error);
+        classList.innerHTML = "<p>Erro ao carregar turmas. Verifique sua conexão e tente novamente.</p>";
     });
 }
 
 function adicionarTurmaAoFrontend(turma) {
     const turmaCard = document.createElement("div");
-    turmaCard.classList.add("turma-card");
+    turmaCard.classList.add("class-card"); // Garantir que usa a classe .class-card
 
     turmaCard.innerHTML = `
         <h3>${turma.nome}</h3>
-        <p>Código de Acesso: ${turma.codigo_acesso}</p>
+        <p><strong>Código da Turma:</strong> ${turma.codigo_acesso}</p>
+        <p><strong>Nº Alunos:</strong> ${turma.numero_alunos ?? 0}</p>
+        <p><strong>Pontuação média:</strong> ${turma.media_pontuacao ?? 0}%</p>
     `;
 
     const classList = document.getElementById("class-list");
@@ -159,7 +187,7 @@ function loadGames() {
 
     if (!gameList || !gameContainer) return;
 
-    gameList.innerHTML = "";
+    gameList.innerHTML = "<p>Carregando jogos...</p>"; // Feedback de carregamento
     gameContainer.innerHTML = "";
     gameContainer.style.display = "none";
 
@@ -175,6 +203,7 @@ function loadGames() {
             return;
         }
 
+        gameList.innerHTML = ""; // Limpar mensagem de carregamento
         games.forEach(game => {
             const gameCard = document.createElement("div");
             gameCard.classList.add("game-card");
@@ -187,7 +216,6 @@ function loadGames() {
                 <p class="points">Points: ${game.pontos || 0}</p>
                 <button class="start-btn" data-game-id="${game.id}">Start Game</button>
             `;
-
 
             gameCard.querySelector(".start-btn").addEventListener("click", () => {
                 gameList.parentElement.style.display = "none";
@@ -236,13 +264,14 @@ function loadMaterials() {
     const materialList = document.getElementById("material-list");
     if (!materialList) return;
 
-    materialList.innerHTML = "";
+    materialList.innerHTML = "<p>Carregando materiais...</p>"; // Feedback de carregamento
 
     fetch(`${API_BASE_URL}/classes/materials`, {
         headers: { "Authorization": `Bearer ${token}` }
     })
     .then(res => res.json())
     .then(materials => {
+        materialList.innerHTML = ""; // Limpar mensagem de carregamento
         if (!Array.isArray(materials) || materials.length === 0) {
             materialList.innerHTML = "<p>Nenhum material disponível.</p>";
         } else {

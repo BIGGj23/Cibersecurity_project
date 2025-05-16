@@ -91,4 +91,5 @@ function iniciarPasswordMaster() {
             console.error("Erro ao buscar pontuação:", err);
         }
     }
+
 }

@@ -39,7 +39,14 @@ document.addEventListener("DOMContentLoaded", async function () {
     if (modal && openBtn && closeBtn) {
         modal.style.display = "none";
 
-        openBtn.addEventListener("click", () => modal.style.display = "block");
+        openBtn.addEventListener("click", () => {
+            modal.style.display = "block";
+            const errorMessage = document.getElementById("errorMessage");
+            if (errorMessage) {
+                errorMessage.textContent = "";
+                errorMessage.style.display = "none";
+            }
+        });
         closeBtn.addEventListener("click", () => modal.style.display = "none");
 
         window.addEventListener("click", (event) => {
@@ -52,7 +59,14 @@ document.addEventListener("DOMContentLoaded", async function () {
         createClassForm.addEventListener("submit", async (e) => {
             e.preventDefault();
             const nome = document.getElementById("className").value;
-            if (!nome) return alert("⚠️ Nome da turma é obrigatório!");
+            if (!nome) {
+                const errorMessage = document.getElementById("errorMessage");
+                if (errorMessage) {
+                    errorMessage.textContent = "⚠️ Nome da turma é obrigatório!";
+                    errorMessage.style.display = "block";
+                }
+                return;
+            }
 
             try {
                 const response = await fetch(`${API_BASE_URL}/classes/create`, {
@@ -71,11 +85,19 @@ document.addEventListener("DOMContentLoaded", async function () {
                     createClassForm.reset();
                     loadClasses();
                 } else {
-                    alert(data.message || 'Erro ao criar turma.');
+                    const errorMessage = document.getElementById("errorMessage");
+                    if (errorMessage) {
+                        errorMessage.textContent = data.message || "Erro ao criar turma.";
+                        errorMessage.style.display = "block";
+                    }
                 }
             } catch (error) {
                 console.error("Erro ao criar turma:", error);
-                alert("Erro inesperado ao criar turma.");
+                const errorMessage = document.getElementById("errorMessage");
+                if (errorMessage) {
+                    errorMessage.textContent = "Erro inesperado ao criar turma.";
+                    errorMessage.style.display = "block";
+                }
             }
         });
     }
@@ -117,43 +139,6 @@ function showTab(tabName) {
     else if (tabName === "materials") loadMaterials();
 }
 
-async function loadClasses() {
-    const token = localStorage.getItem("token");
-
-    try {
-        const response = await fetch(`${API_BASE_URL}/classes/professor`, {
-            headers: { "Authorization": `Bearer ${token}` }
-        });
-
-        const data = await response.json();
-        const classList = document.getElementById("class-list");
-
-        if (!classList) return;
-
-        classList.innerHTML = "";
-        classList.classList.add("class-grid");
-
-        if (data.turmas && data.turmas.length > 0) {
-            data.turmas.forEach(turma => {
-                const card = document.createElement("div");
-                card.classList.add("class-card");
-                card.innerHTML = `
-                    <h3>${turma.nome}</h3>
-                    <p><strong>Código da Turma:</strong> ${turma.codigo_acesso}</p>
-                    <p><strong>Nº Alunos:</strong> ${turma.numero_alunos ?? 0}</p>
-                    <p><strong>Pontuação média:</strong> ${turma.media_pontuacao ?? 0}%</p>
-                `;
-                classList.appendChild(card);
-            });
-        } else {
-            classList.innerHTML = "<p>Ainda não criaste nenhuma turma.</p>";
-        }
-    } catch (error) {
-        console.error("Erro ao carregar turmas:", error);
-        alert("Erro ao carregar turmas, tenta novamente mais tarde.");
-    }
-}
-
 function loadGames() {
     const token = localStorage.getItem("token");
     const gameList = document.getElementById("game-list");
@@ -161,7 +146,7 @@ function loadGames() {
 
     if (!gameList || !gameContainer) return;
 
-    gameList.innerHTML = "";
+    gameList.innerHTML = "<p>Carregando jogos...</p>"; // Feedback de carregamento
     gameContainer.innerHTML = "";
     gameContainer.style.display = "none";
 
@@ -170,14 +155,21 @@ function loadGames() {
     })
     .then(res => res.json())
     .then(data => {
+        gameList.innerHTML = ""; // Limpar mensagem de carregamento
+        if (!data.jogos || data.jogos.length === 0) {
+            gameList.innerHTML = "<p>Nenhum jogo disponível.</p>";
+            return;
+        }
+
         data.jogos.forEach(game => {
-            const nivelFormatado = formatarNivel(game.nivel);
-            const card = document.createElement("div");
             const { label, classe } = formatarNivel(game.nivel);
+            const card = document.createElement("div");
+            card.classList.add("game-card");
             card.innerHTML = `
-                <h2>${game.titulo}</h2>
+                <h2>${game.titulo || "Jogo Sem Nome"}</h2>
                 <span class="level ${classe}">${label}</span>
-                <p>${game.descricao}</p>
+                <p>${game.descricao || "Descrição não disponível"}</p>
+                <p class="points">Points: ${game.pontos || 0}</p>
                 <button class="start-btn" data-id="${game.id}">Start Game</button>
             `;
 
@@ -215,57 +207,99 @@ function loadGames() {
 
             gameList.appendChild(card);
         });
+    })
+    .catch(err => {
+        console.error("Erro ao carregar jogos:", err);
+        gameList.innerHTML = "<p>Não foi possível carregar os jogos.</p>";
     });
 }
 
-// Função para iniciar o material
 function loadMaterials() {
     const materialList = document.getElementById("material-list");
     const materialContainer = document.getElementById("material-container");
-  
+
     if (!materialList || !materialContainer) return;
-  
-    materialList.innerHTML = "";
+
+    materialList.innerHTML = "<p>Carregando materiais...</p>"; // Feedback de carregamento
     materialContainer.style.display = "none";
     materialList.style.display = "grid";
-  
+
     const cards = [
-      {
-        id: "password",
-        titulo: "Como criar uma password segura?",
-        nivel: "Iniciante",
-        categoria: "Autenticação",
-        descricao: "Aprende como criar uma password/senha segura."
-      },
-      {
-        id: "phishing",
-        titulo: "Como detetar um phishing?",
-        nivel: "Iniciante",
-        categoria: "Engenharia Social",
-        descricao: "Aprende a reconhecer e evitar ataques de phishing."
-      },
-      {
-        id: "malware",
-        titulo: "Como descobrir infecção um malware?",
-        nivel: "Intermediário",
-        categoria: "Segurança de Sistemas",
-        descricao: "Identifica sintomas e prevenção de infeções por malware."
-      }
+        {
+            id: "password",
+            titulo: "Como criar uma password segura?",
+            nivel: "Iniciante",
+            categoria: "Autenticação",
+            descricao: "Aprende como criar uma password/senha segura."
+        },
+        {
+            id: "phishing",
+            titulo: "Como detetar um phishing?",
+            nivel: "Iniciante",
+            categoria: "Engenharia Social",
+            descricao: "Aprende a reconhecer e evitar ataques de phishing."
+        },
+        {
+            id: "malware",
+            titulo: "Como descobrir infecção um malware?",
+            nivel: "Intermediário",
+            categoria: "Segurança de Sistemas",
+            descricao: "Identifica sintomas e prevenção de infeções por malware."
+        }
     ];
-  
+
+    materialList.innerHTML = ""; // Limpar mensagem de carregamento
     cards.forEach(mat => {
-      const card = document.createElement("div");
-      card.classList.add("class-card");
-      card.innerHTML = `
-        <h2>${mat.titulo}</h2>
-        <p class="material-nivel">${mat.nivel}</p>
-        <p><strong>${mat.categoria}</strong></p>
-        <p>${mat.descricao}</p>
-        <button class="btn-aprender" onclick="iniciarMaterial('${mat.id}')">Vamos Aprender!</button>
-      `;
-      materialList.appendChild(card);
+        const card = document.createElement("div");
+        card.classList.add("class-card");
+        card.innerHTML = `
+            <h2>${mat.titulo}</h2>
+            <p class="material-nivel">${mat.nivel}</p>
+            <p><strong>${mat.categoria}</strong></p>
+            <p>${mat.descricao}</p>
+            <button class="btn-aprender" onclick="iniciarMaterial('${mat.id}')">Vamos Aprender!</button>
+        `;
+        materialList.appendChild(card);
     });
-  }
+}
+
+async function loadClasses() {
+    const token = localStorage.getItem("token");
+
+    const classList = document.getElementById("class-list");
+    if (!classList) return;
+
+    classList.innerHTML = "<p>Carregando turmas...</p>"; // Feedback de carregamento
+
+    try {
+        const response = await fetch(`${API_BASE_URL}/classes/professor`, {
+            headers: { "Authorization": `Bearer ${token}` }
+        });
+
+        const data = await response.json();
+        classList.innerHTML = ""; // Limpar mensagem de carregamento
+        classList.classList.add("class-grid");
+
+        if (data.turmas && data.turmas.length > 0) {
+            data.turmas.forEach(turma => {
+                const card = document.createElement("div");
+                card.classList.add("class-card");
+                card.innerHTML = `
+                    <h3>${turma.nome}</h3>
+                    <p><strong>Código da Turma:</strong> ${turma.codigo_acesso}</p>
+                    <p><strong>Nº Alunos:</strong> ${turma.numero_alunos ?? 0}</p>
+                    <p><strong>Pontuação média:</strong> ${turma.media_pontuacao ?? 0}%</p>
+                `;
+                classList.appendChild(card);
+            });
+        } else {
+            classList.innerHTML = "<p>Ainda não criaste nenhuma turma.</p>";
+        }
+    } catch (error) {
+        console.error("Erro ao carregar turmas:", error);
+        classList.innerHTML = "<p>Erro ao carregar turmas, tenta novamente mais tarde.</p>";
+    }
+}
   
 
   const materiais ={

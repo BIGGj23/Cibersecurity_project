@@ -123,10 +123,24 @@ function iniciarPhishingDetective() {
                     <p>${mensagemFinal}</p>
                 </div>
             `;
+
+            mostrarBotaoVoltar();
         } catch (err) {
             console.error("Erro ao guardar pontuação:", err);
         }
     }
 
     mostrarPergunta();
+
+    function mostrarBotaoVoltar() {
+        const voltarBtn = document.createElement("button");
+        voltarBtn.textContent = "⬅ Voltar para os Jogos";
+        voltarBtn.classList.add("btn-voltar");
+        voltarBtn.onclick = () => {
+            document.getElementById("game-container").style.display = "none";
+            document.getElementById("games").style.display = "block";
+        };
+        document.getElementById("game-container").appendChild(voltarBtn);
+    }
+    
 }
