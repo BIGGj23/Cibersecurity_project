@@ -125,6 +125,7 @@ function iniciarPhishingDetective() {
             `;
 
             mostrarBotaoVoltar();
+            
         } catch (err) {
             console.error("Erro ao guardar pontuação:", err);
         }
@@ -137,10 +138,16 @@ function iniciarPhishingDetective() {
         voltarBtn.textContent = "⬅ Voltar para os Jogos";
         voltarBtn.classList.add("btn-voltar");
         voltarBtn.onclick = () => {
-            document.getElementById("game-container").style.display = "none";
-            document.getElementById("games").style.display = "block";
+            if (typeof voltarParaJogos === "function") {
+                voltarParaJogos(); // Chama a função JS que recarrega os jogos
+            } else {
+                // fallback
+                document.getElementById("game-container").style.display = "none";
+                document.getElementById("game-list").style.display = "grid";
+            }
         };
         document.getElementById("game-container").appendChild(voltarBtn);
     }
+    
     
 }

@@ -180,8 +180,6 @@ function adicionarTurmaAoFrontend(turma) {
 
 function loadGames() {
     const token = localStorage.getItem("token");
-    if (!token) return;
-
     const gameList = document.getElementById("game-list");
     const gameContainer = document.getElementById("game-container");
 
@@ -196,29 +194,26 @@ function loadGames() {
     })
     .then(res => res.json())
     .then(data => {
-        const games = data.jogos;
-
-        if (!Array.isArray(games) || games.length === 0) {
+        gameList.innerHTML = ""; // Limpar mensagem de carregamento
+        if (!data.jogos || data.jogos.length === 0) {
             gameList.innerHTML = "<p>Nenhum jogo disponível.</p>";
             return;
         }
 
-        gameList.innerHTML = ""; // Limpar mensagem de carregamento
-        games.forEach(game => {
-            const gameCard = document.createElement("div");
-            gameCard.classList.add("game-card");
+        data.jogos.forEach(game => {
             const { label, classe } = formatarNivel(game.nivel);
-
-            gameCard.innerHTML = `
+            const card = document.createElement("div");
+            card.classList.add("game-card");
+            card.innerHTML = `
                 <h2>${game.titulo || "Jogo Sem Nome"}</h2>
                 <span class="level ${classe}">${label}</span>
                 <p>${game.descricao || "Descrição não disponível"}</p>
                 <p class="points">Points: ${game.pontos || 0}</p>
-                <button class="start-btn" data-game-id="${game.id}">Start Game</button>
+                <button class="start-btn" data-id="${game.id}">Start Game</button>
             `;
 
-            gameCard.querySelector(".start-btn").addEventListener("click", () => {
-                gameList.parentElement.style.display = "none";
+            card.querySelector(".start-btn").addEventListener("click", () => {
+                gameList.style.display = "none";
                 gameContainer.style.display = "block";
                 gameContainer.innerHTML = "";
 
@@ -226,31 +221,30 @@ function loadGames() {
                     case 1:
                         const script1 = document.createElement("script");
                         script1.src = "js/phishing_detective.js";
-                        script1.onload = () => iniciarPhishingDetective();
+                        script1.onload = () => iniciarPhishingDetective(true);
                         document.body.appendChild(script1);
                         break;
 
                     case 2:
                         const script2 = document.createElement("script");
                         script2.src = "js/password_master.js";
-                        script2.onload = () => iniciarPasswordMaster();
+                        script2.onload = () => iniciarPasswordMaster(true);
                         document.body.appendChild(script2);
                         break;
 
                     case 3:
                         const script3 = document.createElement("script");
                         script3.src = "js/malware_hunter.js";
-                        script3.onload = () => iniciarMalwareHunter();
+                        script3.onload = () => iniciarMalwareHunter(true);
                         document.body.appendChild(script3);
                         break;
 
                     default:
-                        gameContainer.innerHTML = "<p>Este jogo ainda não está disponível.</p>";
-                        break;
+                        gameContainer.innerHTML = "<p>Jogo ainda não disponível.</p>";
                 }
             });
 
-            gameList.appendChild(gameCard);
+            gameList.appendChild(card);
         });
     })
     .catch(err => {
@@ -260,36 +254,58 @@ function loadGames() {
 }
 
 function loadMaterials() {
-    const token = localStorage.getItem("token");
     const materialList = document.getElementById("material-list");
-    if (!materialList) return;
+    const materialContainer = document.getElementById("material-container");
+
+    if (!materialList || !materialContainer) return;
 
     materialList.innerHTML = "<p>Carregando materiais...</p>"; // Feedback de carregamento
+    materialContainer.style.display = "none";
+    materialList.style.display = "grid";
 
-    fetch(`${API_BASE_URL}/classes/materials`, {
-        headers: { "Authorization": `Bearer ${token}` }
-    })
-    .then(res => res.json())
-    .then(materials => {
-        materialList.innerHTML = ""; // Limpar mensagem de carregamento
-        if (!Array.isArray(materials) || materials.length === 0) {
-            materialList.innerHTML = "<p>Nenhum material disponível.</p>";
-        } else {
-            materials.forEach(material => {
-                const materialCard = document.createElement("div");
-                materialCard.classList.add("class-card");
-                materialCard.innerHTML = `
-                    <h2>${material.title || "Material Sem Título"}</h2>
-                    <p><strong>Nível:</strong> ${material.level || "N/A"}</p>
-                    <p>${material.description || "Descrição não disponível"}</p>
-                `;
-                materialList.appendChild(materialCard);
-            });
+    const cards = [
+        {
+            id: "password",
+            titulo: "Como criar uma password segura?",
+            nivel: "Iniciante",
+            categoria: "Autenticação",
+            descricao: "Aprende como criar uma password/senha segura."
+        },
+        {
+            id: "phishing",
+            titulo: "Como detetar um phishing?",
+            nivel: "Iniciante",
+            categoria: "Engenharia Social",
+            descricao: "Aprende a reconhecer e evitar ataques de phishing."
+        },
+        {
+            id: "malware",
+            titulo: "Como descobrir infecção um malware?",
+            nivel: "Intermédio",
+            categoria: "Segurança de Sistemas",
+            descricao: "Identifica sintomas e prevenção de infeções por malware."
         }
-    })
-    .catch(err => {
-        console.error("Erro ao carregar materiais:", err);
-        materialList.innerHTML = "<p>Erro ao carregar materiais.</p>";
+    ];
+
+    materialList.innerHTML = ""; // Limpar mensagem de carregamento
+    cards.forEach(mat => {
+        const card = document.createElement("div");
+        card.classList.add("class-card");
+        card.innerHTML = `
+            <h3>${mat.titulo}</h3>
+            <p><span class="level ${mat.nivel.toLowerCase()}">${mat.nivel}</span></p>
+            <p><strong>${mat.categoria}</strong></p>
+            <p>${mat.descricao}</p>
+            <button class="btn-aprender" data-material-id="${mat.id}" aria-label="Abrir material ${mat.titulo}">Vamos Aprender!</button>
+        `;
+        materialList.appendChild(card);
+    });
+
+    // Adicionar evento aos botões após criar os cards
+    document.querySelectorAll(".btn-aprender").forEach(button => {
+        button.addEventListener("click", function () {
+            iniciarMaterial(this.getAttribute("data-material-id"));
+        });
     });
 }
 
@@ -349,50 +365,60 @@ function joinClass() {
 function loadMaterials() {
     const materialList = document.getElementById("material-list");
     const materialContainer = document.getElementById("material-container");
-  
+
     if (!materialList || !materialContainer) return;
-  
-    materialList.innerHTML = "";
+
+    materialList.innerHTML = "<p>Carregando materiais...</p>"; // Feedback de carregamento
     materialContainer.style.display = "none";
     materialList.style.display = "grid";
-  
+
     const cards = [
-      {
-        id: "password",
-        titulo: "Como criar uma password segura?",
-        nivel: "Iniciante",
-        categoria: "Autenticação",
-        descricao: "Aprende como criar uma password/senha segura."
-      },
-      {
-        id: "phishing",
-        titulo: "Como detetar um phishing?",
-        nivel: "Iniciante",
-        categoria: "Engenharia Social",
-        descricao: "Aprende a reconhecer e evitar ataques de phishing."
-      },
-      {
-        id: "malware",
-        titulo: "Como descobrir infecção um malware?",
-        nivel: "Intermediário",
-        categoria: "Segurança de Sistemas",
-        descricao: "Identifica sintomas e prevenção de infeções por malware."
-      }
+        {
+            id: "password",
+            titulo: "Como criar uma password segura?",
+            nivel: "Iniciante",
+            categoria: "Autenticação",
+            descricao: "Aprende como criar uma password/senha segura."
+        },
+        {
+            id: "phishing",
+            titulo: "Como detetar um phishing?",
+            nivel: "Iniciante",
+            categoria: "Engenharia Social",
+            descricao: "Aprende a reconhecer e evitar ataques de phishing."
+        },
+        {
+            id: "malware",
+            titulo: "Como descobrir infecção um malware?",
+            nivel: "Intermédio",
+            categoria: "Segurança de Sistemas",
+            descricao: "Identifica sintomas e prevenção de infeções por malware."
+        }
     ];
-  
+
+    materialList.innerHTML = ""; // Limpar mensagem de carregamento
     cards.forEach(mat => {
-      const card = document.createElement("div");
-      card.classList.add("class-card");
-      card.innerHTML = `
-        <h2>${mat.titulo}</h2>
-        <p class="material-nivel">${mat.nivel}</p>
-        <p><strong>${mat.categoria}</strong></p>
-        <p>${mat.descricao}</p>
-        <button class="btn-aprender" onclick="iniciarMaterial('${mat.id}')">Vamos Aprender!</button>
-      `;
-      materialList.appendChild(card);
+        const card = document.createElement("div");
+        card.classList.add("game-card"); // Usar game-card para alinhar com os jogos
+        const nivelNormalizado = formatarNivel(mat.nivel).classe; // Usar função de normalização
+
+        card.innerHTML = `
+            <h2>${mat.titulo}</h2>
+            <span class="level ${nivelNormalizado}">${mat.nivel}</span>
+            <p>${mat.descricao}</p>
+            <p class="points">Points: 0</p> <!-- Adicionado para consistência com jogos -->
+            <button class="start-btn" data-material-id="${mat.id}" aria-label="Abrir material ${mat.titulo}">Vamos Aprender!</button>
+        `;
+        materialList.appendChild(card);
     });
-  }
+
+    // Adicionar evento aos botões após criar os cards
+    document.querySelectorAll(".start-btn").forEach(button => {
+        button.addEventListener("click", function () {
+            iniciarMaterial(this.getAttribute("data-material-id"));
+        });
+    });
+}
   
 
   const materiais ={
@@ -486,21 +512,24 @@ function loadMaterials() {
 
   };
 
-  // Função para iniciar o material
-  function iniciarMaterial(id) {
+function iniciarMaterial(id) {
     const material = materiais[id];
     const materialList = document.getElementById("material-list");
     const materialContainer = document.getElementById("material-container");
-  
+
     if (!material || !materialList || !materialContainer) return;
-  
+
     materialList.style.display = "none";
     materialContainer.style.display = "block";
-  
+
     materialContainer.innerHTML = `
-      <button class="btn-voltar" onclick="voltarParaLista()">⬅ Voltar</button>
-      <h2>${material.titulo}</h2>
-      <div class="material-scroll">${material.conteudo}</div>
+        <div class="material-scroll">
+            <button class="btn-voltar" onclick="voltarParaLista()">⬅ Voltar</button>
+            <h2>${material.titulo}</h2>
+            <div class="material-box">
+                ${material.conteudo}
+            </div>
+        </div>
     `;
 }
 
@@ -508,10 +537,13 @@ function loadMaterials() {
 window.iniciarMaterial = iniciarMaterial;
 
   // Função para voltar à lista de materiais
-  function voltarParaLista() {
+function voltarParaLista() {
     document.getElementById("material-container").style.display = "none";
     document.getElementById("material-list").style.display = "grid";
-  }
+
+    loadGames();
+}
+
   
   window.voltarParaLista = voltarParaLista;
 

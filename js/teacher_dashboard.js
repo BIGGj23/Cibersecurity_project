@@ -220,7 +220,7 @@ function loadMaterials() {
 
     if (!materialList || !materialContainer) return;
 
-    materialList.innerHTML = "<p>Carregando materiais...</p>"; // Feedback de carregamento
+    materialList.innerHTML = "<p>Carregando materiais...</p>";
     materialContainer.style.display = "none";
     materialList.style.display = "grid";
 
@@ -242,26 +242,37 @@ function loadMaterials() {
         {
             id: "malware",
             titulo: "Como descobrir infecção um malware?",
-            nivel: "Intermediário",
+            nivel: "Intermedio",
             categoria: "Segurança de Sistemas",
             descricao: "Identifica sintomas e prevenção de infeções por malware."
         }
     ];
 
-    materialList.innerHTML = ""; // Limpar mensagem de carregamento
+    materialList.innerHTML = "";
     cards.forEach(mat => {
         const card = document.createElement("div");
-        card.classList.add("class-card");
+        card.classList.add("game-card");
+
+        const nivelFormatado = formatarNivel(mat.nivel);
+
         card.innerHTML = `
             <h2>${mat.titulo}</h2>
-            <p class="material-nivel">${mat.nivel}</p>
+            <span class="level ${nivelFormatado.classe}">${nivelFormatado.label}</span>
             <p><strong>${mat.categoria}</strong></p>
             <p>${mat.descricao}</p>
-            <button class="btn-aprender" onclick="iniciarMaterial('${mat.id}')">Vamos Aprender!</button>
+            <button class="start-btn" data-material-id="${mat.id}">Vamos Aprender!</button>
         `;
+
         materialList.appendChild(card);
     });
+
+    document.querySelectorAll(".start-btn").forEach(btn => {
+        btn.addEventListener("click", function () {
+            iniciarMaterial(this.getAttribute("data-material-id"));
+        });
+    });
 }
+
 
 async function loadClasses() {
     const token = localStorage.getItem("token");
@@ -397,28 +408,37 @@ async function loadClasses() {
     const material = materiais[id];
     const materialList = document.getElementById("material-list");
     const materialContainer = document.getElementById("material-container");
-  
+
     if (!material || !materialList || !materialContainer) return;
-  
+
     materialList.style.display = "none";
     materialContainer.style.display = "block";
-  
+
     materialContainer.innerHTML = `
-      <button class="btn-voltar" onclick="voltarParaLista()">⬅ Voltar</button>
-      <h2>${material.titulo}</h2>
-      <div class="material-scroll">${material.conteudo}</div>
+        <div class="material-scroll">
+            <button class="btn-voltar" onclick="voltarParaLista()">⬅ Voltar</button>
+            <h2>${material.titulo}</h2>
+            <div class="material-content">${material.conteudo}</div>
+        </div>
     `;
 }
-
 
 window.iniciarMaterial = iniciarMaterial;
 
   // Função para voltar à lista de materiais
-  function voltarParaLista() {
-    document.getElementById("material-container").style.display = "none";
-    document.getElementById("material-list").style.display = "grid";
-  }
+function voltarParaJogos() {
+    const gameContainer = document.getElementById("game-container");
+    const gameList = document.getElementById("game-list");
+
+    if (!gameContainer || !gameList) return;
+
+    gameContainer.style.display = "none";
+    gameList.style.display = "grid";
+
+    loadGames(); // <- força o recarregamento dos jogos
+}
+
   
-  window.voltarParaLista = voltarParaLista;
+window.voltarParaLista = voltarParaLista;
 
 

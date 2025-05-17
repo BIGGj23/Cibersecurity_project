@@ -92,4 +92,22 @@ function iniciarPasswordMaster() {
         }
     }
 
+    function mostrarBotaoVoltar() {
+        const voltarBtn = document.createElement("button");
+        voltarBtn.textContent = "⬅ Voltar para os Jogos";
+        voltarBtn.classList.add("btn-voltar");
+        voltarBtn.onclick = () => {
+            if (typeof voltarParaJogos === "function") {
+                voltarParaJogos(); // Chama a função JS que recarrega os jogos
+            } else {
+                // fallback
+                document.getElementById("game-container").style.display = "none";
+                document.getElementById("game-list").style.display = "grid";
+            }
+        };
+        document.getElementById("game-container").appendChild(voltarBtn);
+    }
+
+    mostrarBotaoVoltar();
+
 }
