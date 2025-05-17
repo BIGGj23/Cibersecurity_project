@@ -1,4 +1,4 @@
-const { Turma, Utilizador, Jogo, TurmaAluno, PontuacaoJogo } = require('../models/associations');
+const { Turma, Utilizador, Jogo, TurmaAluno, PontuacaoJogo, Sequelize } = require('../models/associations');
 
 // Criar uma nova turma
 const createClass = async (req, res) => {
@@ -27,8 +27,19 @@ const getClasses = async (req, res) => {
 
         const turmas = await Turma.findAll({
             where: { professor_id: professorId },
-            attributes: ['id', 'nome', 'codigo_acesso'],
+            attributes: [
+                'id', 'nome', 'codigo_acesso',
+                [Sequelize.fn("COUNT", Sequelize.col("inscricoes.aluno_id")), "numero_alunos"]
+            ],
+            include: [{
+                model: TurmaAluno,
+                as: 'inscricoes',
+                attributes: []
+            }],
+            group: ['Turma.id'],
+            raw: true
         });
+        
 
         res.json({ success: true, turmas });
     } catch (error) {
@@ -43,15 +54,30 @@ const getStudentClasses = async (req, res) => {
         const studentId = req.user.id;
 
         const turmas = await Turma.findAll({
-            include: [{
-                model: Utilizador,
-                as: 'alunos',
-                where: { id: studentId },
-                attributes: [],
-                through: { attributes: [] }
-            }],
-            attributes: ['id', 'nome', 'codigo_acesso'],
+            include: [
+                {
+                    model: Utilizador,
+                    as: 'alunos',
+                    where: { id: studentId },
+                    attributes: [],
+                    through: { attributes: [] }
+                },
+                {
+                    model: TurmaAluno,
+                    as: 'inscricoes',
+                    attributes: []
+                }
+            ],
+            attributes: [
+                'id',
+                'nome',
+                'codigo_acesso',
+                [Sequelize.fn("COUNT", Sequelize.col("inscricoes.aluno_id")), "numero_alunos"]
+            ],
+            group: ['Turma.id'],
+            raw: true
         });
+        
 
         res.json({ success: true, turmas });
     } catch (error) {
@@ -59,6 +85,7 @@ const getStudentClasses = async (req, res) => {
         res.status(500).json({ success: false, message: `Erro ao listar turmas do aluno: ${error.message}` });
     }
 };
+
 
 // Aluno entrar numa turma através do código de acesso
 const joinClass = async (req, res) => {
