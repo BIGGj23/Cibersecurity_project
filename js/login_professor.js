@@ -50,4 +50,10 @@ document.addEventListener("DOMContentLoaded", function () {
             alert("Erro ao tentar fazer login. Verifique sua conexão ou tente novamente.");
         }
     });
+    
+    // Botão ✖ redireciona para a página inicial (index.html)
+    document.querySelector(".close-button")?.addEventListener("click", () => {
+        window.location.href = "index.html";
+    });
+
 });

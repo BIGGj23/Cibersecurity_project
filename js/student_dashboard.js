@@ -110,8 +110,8 @@ async function loadStats() {
         const data = await response.json();
 
         if (data.streak !== undefined && data.points !== undefined) {
-            document.querySelector(".streak").textContent = `Streak: ${data.streak} 🔥`;
-            document.querySelector(".points").textContent = `Points: ${data.points} ⭐`;
+            document.querySelector(".streak").textContent = `Série de vitorias: ${data.streak} 🔥`;
+            document.querySelector(".points").textContent = `Pontos: ${data.points} ⭐`;
         }
     } catch (err) {
         console.error("❌ Erro ao carregar estatísticas:", err);
@@ -170,8 +170,7 @@ function adicionarTurmaAoFrontend(turma) {
     turmaCard.innerHTML = `
         <h3>${turma.nome}</h3>
         <p><strong>Código da Turma:</strong> ${turma.codigo_acesso}</p>
-        <p><strong>Nº Alunos:</strong> ${turma.numero_alunos ?? 0}</p>
-        <p><strong>Pontuação média:</strong> ${turma.media_pontuacao ?? 0}%</p>
+        <p><strong>Alunos nesta turma:</strong> ${turma.numero_alunos}</p>
     `;
 
     const classList = document.getElementById("class-list");
@@ -208,8 +207,7 @@ function loadGames() {
                 <h2>${game.titulo || "Jogo Sem Nome"}</h2>
                 <span class="level ${classe}">${label}</span>
                 <p>${game.descricao || "Descrição não disponível"}</p>
-                <p class="points">Points: ${game.pontos || 0}</p>
-                <button class="start-btn" data-id="${game.id}">Start Game</button>
+                <button class="start-btn" data-id="${game.id}">Vamos Jogar!</button>
             `;
 
             card.querySelector(".start-btn").addEventListener("click", () => {
@@ -281,7 +279,7 @@ function loadMaterials() {
         {
             id: "malware",
             titulo: "Como descobrir infecção um malware?",
-            nivel: "Intermédio",
+            nivel: "Intermedio",
             categoria: "Segurança de Sistemas",
             descricao: "Identifica sintomas e prevenção de infeções por malware."
         }
@@ -390,7 +388,7 @@ function loadMaterials() {
         {
             id: "malware",
             titulo: "Como descobrir infecção um malware?",
-            nivel: "Intermédio",
+            nivel: "Intermedio",
             categoria: "Segurança de Sistemas",
             descricao: "Identifica sintomas e prevenção de infeções por malware."
         }
@@ -406,7 +404,6 @@ function loadMaterials() {
             <h2>${mat.titulo}</h2>
             <span class="level ${nivelNormalizado}">${mat.nivel}</span>
             <p>${mat.descricao}</p>
-            <p class="points">Points: 0</p> <!-- Adicionado para consistência com jogos -->
             <button class="start-btn" data-material-id="${mat.id}" aria-label="Abrir material ${mat.titulo}">Vamos Aprender!</button>
         `;
         materialList.appendChild(card);
@@ -543,10 +540,27 @@ function voltarParaLista() {
 
     loadGames();
 }
-
   
-  window.voltarParaLista = voltarParaLista;
+window.voltarParaLista = voltarParaLista;
 
+
+function voltarParaJogos() {
+    // Ativar a tab "games"
+    const tabGames = document.querySelector('[data-tab="games"]');
+    if (tabGames) tabGames.click();
+
+    const gameContainer = document.getElementById("game-container");
+    const gameList = document.getElementById("game-list");
+
+    if (!gameContainer || !gameList) return;
+
+    gameContainer.style.display = "none";
+    gameList.style.display = "grid";
+
+    loadGames();
+}
+
+window.voltarParaJogos = voltarParaJogos;
 function logout() {
     localStorage.clear();
     window.location.href = "index.html";

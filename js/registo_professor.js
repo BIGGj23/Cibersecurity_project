@@ -98,4 +98,10 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
     }
+    
+    // Botão ✖ redireciona para a página inicial (index.html)
+    document.querySelector(".close-button")?.addEventListener("click", () => {
+        window.location.href = "index.html";
+    });
+
 });

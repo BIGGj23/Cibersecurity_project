@@ -1,15 +1,7 @@
-document.addEventListener("DOMContentLoaded", () => {
-    const gameContainer = document.getElementById("game-container");
-
-    if (gameContainer) {
-        iniciarPasswordMaster();
-    }
-});
-
 function iniciarPasswordMaster() {
     const gameHTML = `
         <div class="game-section">
-            <h2>Password Master</h2>
+            <h2>Mestre da Password</h2>
             <p>Tenta criar uma password segura!</p>
             <input type="text" id="passwordInput" placeholder="Insere a tua password" />
             <button id="checkPasswordBtn" class="jogo-btn">Verificar Password</button>
@@ -18,7 +10,8 @@ function iniciarPasswordMaster() {
         </div>
     `;
 
-    document.getElementById("game-container").innerHTML = gameHTML;
+    const gameContainer = document.getElementById("game-container");
+    gameContainer.innerHTML = gameHTML;
 
     const passwordInput = document.getElementById("passwordInput");
     const checkButton = document.getElementById("checkPasswordBtn");
@@ -35,18 +28,29 @@ function iniciarPasswordMaster() {
 
         let pontosGanhos = 0;
         let multiplicador = 1;
+        let mensagemFinal = "";
+        let resultadoHTML = "";
 
-        if (password.length >= 8 && /[A-Z]/.test(password) && /[0-9]/.test(password) && /[^A-Za-z0-9]/.test(password)) {
+        const passwordForte = password.length >= 8 &&
+                              /[A-Z]/.test(password) &&
+                              /[0-9]/.test(password) &&
+                              /[^A-Za-z0-9]/.test(password);
+
+        if (passwordForte) {
             streak++;
             multiplicador = streak >= 3 ? 2 : 1;
             pontosGanhos = 100 * multiplicador;
-
-            resultDisplay.innerHTML = `✅ <span style="color: green;">Password forte! +${pontosGanhos} pontos (x${multiplicador})</span>`;
+            resultadoHTML = `✅ <span style="color: green;">Password forte! +${pontosGanhos} pontos (x${multiplicador})</span>`;
+            mensagemFinal = "<p style='color: #2ecc71;'>Boa! Criaste uma password segura. Continua assim! 🔐</p>";
         } else {
             streak = 0;
             pontosGanhos = 0;
-            resultDisplay.innerHTML = `❌ <span style="color: red;">Password fraca! Nenhum ponto atribuído.</span>`;
+            resultadoHTML = "❌ <span style='color: red;'>Password fraca! Nenhum ponto atribuído.</span>";
+            mensagemFinal = "<p style='color: #e74c3c;'>Tenta novamente com uma password mais forte. 💡</p>";
         }
+
+        resultDisplay.innerHTML = resultadoHTML;
+        passwordInput.value = "";
 
         const token = localStorage.getItem("token");
 
@@ -64,27 +68,38 @@ function iniciarPasswordMaster() {
                 }),
             });
 
-            if (typeof loadStats === "function") {
-                loadStats();
-            }
-
+            if (typeof loadStats === "function") loadStats();
             atualizarPontuacaoVisual();
         } catch (error) {
             console.error("Erro ao guardar pontuação:", error);
         }
 
-        passwordInput.value = "";
+        setTimeout(() => {
+            gameContainer.innerHTML = `
+                <div class="game-section">
+                    <div class="game-header">
+                        <h2 class="fim-jogo">Fim do Jogo!</h2>
+                        <button class="btn-voltar" id="btnVoltarPM">⬅ Voltar para Jogos</button>
+                    </div>
+                    ${mensagemFinal}
+                    <p>Pontuação obtida: <strong>${pontosGanhos}</strong></p>
+                    <p>Streak final: <strong>${streak}</strong></p>
+                </div>
+            `;
+        
+            const voltarBtn = document.getElementById("btnVoltarPM");
+            if (voltarBtn) {
+                voltarBtn.addEventListener("click", voltarParaJogos);
+            }
+        }, 1500);
     });
 
     async function atualizarPontuacaoVisual() {
         const token = localStorage.getItem("token");
         try {
             const response = await fetch(`${API_BASE_URL}/classes/student/stats`, {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
+                headers: { Authorization: `Bearer ${token}` }
             });
-
             const data = await response.json();
             pointDisplay.textContent = data.points || 0;
         } catch (err) {
@@ -98,16 +113,12 @@ function iniciarPasswordMaster() {
         voltarBtn.classList.add("btn-voltar");
         voltarBtn.onclick = () => {
             if (typeof voltarParaJogos === "function") {
-                voltarParaJogos(); // Chama a função JS que recarrega os jogos
+                voltarParaJogos();
             } else {
-                // fallback
                 document.getElementById("game-container").style.display = "none";
                 document.getElementById("game-list").style.display = "grid";
             }
         };
         document.getElementById("game-container").appendChild(voltarBtn);
     }
-
-    mostrarBotaoVoltar();
-
 }

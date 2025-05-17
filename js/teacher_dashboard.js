@@ -33,26 +33,38 @@ document.addEventListener("DOMContentLoaded", async function () {
     await loadClasses();
 
     const modal = document.getElementById("createClassModal");
+    const modalOverlay = document.querySelector(".modal-overlay");
     const openBtn = document.querySelector(".create-class-btn");
     const closeBtn = document.querySelector(".close-button");
 
-    if (modal && openBtn && closeBtn) {
+    if (modal && modalOverlay && openBtn && closeBtn) {
         modal.style.display = "none";
+        modalOverlay.style.display = "none";
 
         openBtn.addEventListener("click", () => {
             modal.style.display = "block";
+            modalOverlay.style.display = "flex"; // Ativa o overlay
+            modalOverlay.classList.add("active"); // Adiciona classe para transição
             const errorMessage = document.getElementById("errorMessage");
             if (errorMessage) {
                 errorMessage.textContent = "";
                 errorMessage.style.display = "none";
             }
         });
-        closeBtn.addEventListener("click", () => modal.style.display = "none");
 
-        window.addEventListener("click", (event) => {
-            if (event.target === modal) modal.style.display = "none";
+        closeBtn.addEventListener("click", () => {
+            modal.style.display = "none";
+            modalOverlay.style.display = "none"; // Desativa o overlay
+            modalOverlay.classList.remove("active"); // Remove classe para transição
         });
     }
+    window.addEventListener("click", (event) => {
+            if (event.target === modalOverlay) {
+                modal.style.display = "none";
+                modalOverlay.style.display = "none"; // Desativa o overlay ao clicar fora
+                modalOverlay.classList.remove("active");
+            }
+        });
 
     const createClassForm = document.getElementById("createClassForm");
     if (createClassForm) {
@@ -169,8 +181,7 @@ function loadGames() {
                 <h2>${game.titulo || "Jogo Sem Nome"}</h2>
                 <span class="level ${classe}">${label}</span>
                 <p>${game.descricao || "Descrição não disponível"}</p>
-                <p class="points">Points: ${game.pontos || 0}</p>
-                <button class="start-btn" data-id="${game.id}">Start Game</button>
+                <button class="start-btn" data-id="${game.id}">Vamos Jogar!</button>
             `;
 
             card.querySelector(".start-btn").addEventListener("click", () => {
@@ -298,8 +309,7 @@ async function loadClasses() {
                 card.innerHTML = `
                     <h3>${turma.nome}</h3>
                     <p><strong>Código da Turma:</strong> ${turma.codigo_acesso}</p>
-                    <p><strong>Nº Alunos:</strong> ${turma.numero_alunos ?? 0}</p>
-                    <p><strong>Pontuação média:</strong> ${turma.media_pontuacao ?? 0}%</p>
+                    <p><strong>Nº Alunos:</strong> ${turma.numero_alunos}</p>
                 `;
                 classList.appendChild(card);
             });
@@ -425,8 +435,24 @@ async function loadClasses() {
 
 window.iniciarMaterial = iniciarMaterial;
 
-  // Função para voltar à lista de materiais
+function voltarParaLista() {
+    const materialContainer = document.getElementById("material-container");
+    const materialList = document.getElementById("material-list");
+
+    if (!materialContainer || !materialList) return;
+
+    materialContainer.style.display = "none";
+    materialList.style.display = "grid";
+}
+
+window.voltarParaLista = voltarParaLista;
+
+
 function voltarParaJogos() {
+    // Ativar a tab "games"
+    const tabGames = document.querySelector('[data-tab="games"]');
+    if (tabGames) tabGames.click();
+
     const gameContainer = document.getElementById("game-container");
     const gameList = document.getElementById("game-list");
 
@@ -435,10 +461,12 @@ function voltarParaJogos() {
     gameContainer.style.display = "none";
     gameList.style.display = "grid";
 
-    loadGames(); // <- força o recarregamento dos jogos
+    loadGames();
 }
 
+window.voltarParaJogos = voltarParaJogos;
+
   
-window.voltarParaLista = voltarParaLista;
+
 
 

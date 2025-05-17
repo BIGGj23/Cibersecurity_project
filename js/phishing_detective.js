@@ -117,14 +117,21 @@ function iniciarPhishingDetective() {
 
             gameContainer.innerHTML = `
                 <div class="game-section">
-                    <h2>Fim do Jogo!</h2>
+                    <div class="game-header">
+                        <h2 class="fim-jogo">Fim do Jogo!</h2>
+                        <button class="btn-voltar" id="btnVoltarPD">⬅ Voltar para os Jogos</button>
+                    </div>
                     <p>Pontuação Final: ${pontuacaoTotal}</p>
                     <p>Streak Final: ${streak}</p>
                     <p>${mensagemFinal}</p>
                 </div>
             `;
 
-            mostrarBotaoVoltar();
+            const voltarBtn = document.getElementById("btnVoltarPD");
+            if (voltarBtn) {
+                voltarBtn.addEventListener("click", voltarParaJogos);
+            }
+
             
         } catch (err) {
             console.error("Erro ao guardar pontuação:", err);

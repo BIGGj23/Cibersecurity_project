@@ -64,4 +64,9 @@ document.addEventListener("DOMContentLoaded", function () {
     } else {
         console.error("Erro: Formulário de registo do aluno não encontrado!");
     }
+    
+    // Botão ✖ redireciona para a página inicial (index.html)
+    document.querySelector(".close-button")?.addEventListener("click", () => {
+        window.location.href = "index.html";
+    });
 });
