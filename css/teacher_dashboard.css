@@ -114,7 +114,7 @@ body {
     display: none;
     padding: 20px 0;
     height: auto;
-    overflow: visible;
+    overflow: auto;
 }
 
 .tab-content.active {
@@ -442,8 +442,6 @@ body {
     margin: 6px 0;
     font-size: 14px;
     color: #3b3b3b;
-    word-wrap: break-word;
-    overflow-wrap: break-word;
 }
 /*-----------botão criar turma------------------*/
 

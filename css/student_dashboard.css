@@ -22,6 +22,7 @@ body {
     margin: 0 auto;
     height: auto;
     overflow: visible;
+    width: 90%; /* Ajuste para ocupar mais da tela, mas com limite máximo */
 }
 
 /* Header */
@@ -43,6 +44,7 @@ body {
     display: flex;
     align-items: center;
     gap: 15px;
+    margin-left: auto;
 }
 
 .streak, .points {
@@ -66,6 +68,27 @@ body {
 
 .join-class-btn:hover {
     background-color: #3B4A56;
+}
+
+.logout-btn {
+    background-color: #e74c3c;
+    color: #ffffff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s;
+    margin-left: 20px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+}
+
+.logout-btn:hover {
+    background-color: #c0392b;
 }
 
 /* Caixinha branca para as abas */
@@ -131,20 +154,23 @@ body {
 /* Grid de cards */
 .card-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Ajuste para largura mínima de 280px e ocupação proporcional */
     gap: 20px;
-    padding: 20px;
+    padding: 0 10px; /* Reduzir padding lateral */
     justify-content: center;
-  }
+    max-width: 1200px; /* Limite máximo para evitar excesso em telas muito largas */
+    margin: 0 auto; /* Centralizar, mas permitir ocupação */
+}
 
 /* Cards genéricos */
-.game-card, .material-card{
+.game-card, .material-card {
     background-color: #FFFFFF;
     border-radius: 8px;
     padding: 20px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     color: #1A252F;
     transition: transform 0.2s;
+    width: 100%; /* Garantir que ocupe o espaço disponível no grid */
 }
 
 .game-card:hover, .material-card:hover {
@@ -155,9 +181,10 @@ body {
     font-size: 18px;
     font-weight: bold;
     margin-bottom: 10px;
+    color: #1A252F;
 }
 
-.game-card p, .material-card p{
+.game-card p, .material-card p {
     font-size: 14px;
     color: #6B7280;
     margin-bottom: 10px;
@@ -174,13 +201,12 @@ body {
     height: auto;
 }
 
-
 .class-card {
     background-color: #ffffff;
     color: #1f2a37;
     border-radius: 10px;
     padding: 20px;
-    width: 280px; /* Largura fixa, como no professor */
+    width: 280px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
     transition: transform 0.2s ease-in-out;
 }
@@ -200,8 +226,8 @@ body {
     margin: 6px 0;
     font-size: 14px;
     color: #3b3b3b;
-    word-wrap: break-word; 
-    overflow-wrap: break-word; 
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
 .class-card p strong {
@@ -234,14 +260,14 @@ body {
 }
 
 /* Pontos nos jogos */
-.game-card .points {
+.game-card .points, .material-card .points {
     font-size: 14px;
     color: #1A252F;
     margin-bottom: 10px;
 }
 
 /* Botão "Start Game" */
-.game-card .start-btn {
+.game-card .start-btn, .material-card .start-btn {
     background-color: #2D3B45;
     color: #E5E7EB;
     border: none;
@@ -254,7 +280,7 @@ body {
     text-align: center;
 }
 
-.game-card .start-btn:hover {
+.game-card .start-btn:hover, .material-card .start-btn:hover {
     background-color: #3B4A56;
 }
 
@@ -339,8 +365,97 @@ body {
 .btn-primary:hover {
     background-color: #3B4A56;
 }
+
+/* Estilo para o contêiner de conteúdo do material */
+.material-scroll {
+    max-height: auto;
+    margin: 0 auto;
+    overflow-y: auto;
+    background-color: #101c2a;
+    padding: 30px 40px;
+    border-radius: 10px;
+    color: #f1f1f1;
+    line-height: 1.6;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+  
+.material-scroll h2 {
+    font-size: 26px;
+    color: #7aa5ff;
+    margin-bottom: 25px;
+}
+
+.material-scroll h3 {
+    font-size: 20px;
+    color: #ffffff;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    border-bottom: 2px solid #2f5aaa;
+    padding-bottom: 5px;
+}
+  
+.material-scroll ul {
+    padding-left: 20px;
+    margin-bottom: 20px;
+}
+  
+.material-scroll ul li {
+    margin-bottom: 8px;
+    font-size: 15px;
+}
+.material-box {
+    background-color: #0d1a26;
+    padding: 30px 40px;
+    border-radius: 10px;
+    color: #f1f1f1;
+    line-height: 1.6;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
+  }
+  
+
+.level {
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-weight: bold;
+    border: 2px solid transparent;
+    display: inline-block;
+}
+
+.level.iniciante {
+    border-color: #28a745;
+    color: #28a745;
+}
+
+.level.intermedio {
+    border-color: #ffc107;
+    color: #ffc107;
+}
+
+.level.avancado {
+    border-color: #dc3545;
+    color: #dc3545;
+}
+
+.btn-voltar {
+    background-color: #ffffff;
+    color: #223f66;
+    padding: 8px 16px;
+    border: 2px solid #1e2a38;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    margin-bottom: 20px;
+}
+
+.btn-voltar:hover {
+    background-color: #1e2a38;
+    color: #ffffff;
+}
+/* ==================== JOGO: PASSWORD MASTER ==================== */
 #password-master {
-    background: rgb(255, 255, 255);
+    background: #fff;
     padding: 20px;
     border-radius: 12px;
     max-width: 500px;
@@ -349,7 +464,7 @@ body {
   }
   
   .level-tag {
-    background: #ffffff;
+    background: #d4f7dc;
     color: #256029;
     font-size: 0.85rem;
     padding: 4px 12px;
@@ -365,30 +480,25 @@ body {
   }
   
   #checkPasswordBtn {
-    background-color: #ffffff;
-    color: #1f2a37;
+    margin-top: 12px;
+    padding: 10px 20px;
+    background: #2c3e50;
+    color: white;
     border: none;
-    padding: 12px 20px;
     border-radius: 6px;
-    font-weight: bold;
-    font-size: 14px;
     cursor: pointer;
-    margin-top: 10px;
-    transition: all 0.2s ease-in-out;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-}
-
-#checkPasswordBtn:hover {
-    background-color: #e0e0e0;
-}
-
+  }
+  
+  #checkPasswordBtn:hover {
+    background: #1c2a38;
+  }
   
   #passwordResult {
     margin-top: 10px;
     font-weight: bold;
   }
-
-  /* ==================== JOGO: PHISHING DETECTIVE ==================== */
+  
+/* ==================== JOGO: PHISHING DETECTIVE ==================== */
 
 .game-section {
     background-color: #1f2a37;
@@ -404,7 +514,7 @@ body {
 .game-section h2 {
     font-size: 26px;
     margin-bottom: 20px;
-}       
+}
 
 .nivel {
     background-color: #f6e58d;
@@ -439,7 +549,7 @@ body {
     font-weight: bold;
     font-size: 14px;
     cursor: pointer;
-    margin-top: 10px;
+    margin-right: 10px;
     transition: all 0.2s ease-in-out;
     box-shadow: 0 2px 6px rgba(0,0,0,0.2);
 }
@@ -461,6 +571,7 @@ body {
 #feedback.incorreto {
     color: #e74c3c;
 }
+
 /* ======================== Malware Hunter ======================== */
 
 .game-section {
@@ -494,7 +605,7 @@ body {
 }
   
 .jogo-btn {
-    background-color: #1e2a38;
+    background-color: #2980b9;
     color: white;
     border: none;
     padding: 12px;
@@ -505,7 +616,20 @@ body {
 }
   
 .jogo-btn:hover {
-    background-color: #1e2a38;
+    background-color: #3498db;
+}
+  
+.jogo-btn:disabled {
+    background-color: #95a5a6;
+    cursor: not-allowed;
+}
+  
+.resposta-certa {
+    background-color: #27ae60 !important;
+}
+  
+.resposta-errada {
+    background-color: #c0392b !important;
 }
   
 #feedback {
@@ -516,7 +640,7 @@ body {
   
 .next-btn {
     margin-top: 20px;
-    background-color: #1e2a38;
+    background-color: #8e44ad;
     color: white;
     border: none;
     padding: 10px 16px;
@@ -525,89 +649,7 @@ body {
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
-  
-.next-btn:hover {
-    background-color: #1e2a38;
-}
 
-.material-scroll {
-        max-height: auto;
-        margin: 0 auto;
-        overflow-y: auto;
-        background-color: #101c2a;
-        padding: 30px 40px;
-        border-radius: 10px;
-        color: #f1f1f1;
-        line-height: 1.6;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-}
-      
-.material-scroll h2 {
-        font-size: 26px;
-        color: #7aa5ff;
-        margin-bottom: 25px;
-}
-      
-.material-scroll h3 {
-        font-size: 20px;
-        color: #ffffff;
-        margin-top: 20px;
-        margin-bottom: 10px;
-        border-bottom: 2px solid #2f5aaa;
-        padding-bottom: 5px;
-}
-      
-.material-scroll ul {
-        padding-left: 20px;
-        margin-bottom: 20px;
-}
-      
-.material-scroll ul li {
-        margin-bottom: 8px;
-        font-size: 15px;
-}
-      
-.btn-aprender,
-.btn-voltar {
-        background-color: #ffffff;
-        color: #223f66;
-        padding: 8px 16px;
-        border: 2px solid #1e2a38;
-        border-radius: 8px;
-        font-weight: bold;
-        font-size: 14px;
-        cursor: pointer;
-        transition: all 0.2s ease-in-out;
-        margin-bottom: 20px;
-}
-      
-.btn-aprender:hover,
-.btn-voltar:hover {
-        background-color: #1e2a38;
-        color: #ffffff;
-}
-.level {
-        padding: 4px 8px;
-        border-radius: 6px;
-        font-weight: bold;
-        border: 2px solid transparent;
-        display: inline-block;
-}
-      
-.level.iniciante {
-        border-color: #28a745; /* verde */
-        color: #28a745;
-}
-      
-.level.intermedio {
-        border-color: #ffc107; /* amarelo */
-        color: #ffc107;
-}
-      
-.level.avancado {
-        border-color: #dc3545; /* vermelho */
-        color: #dc3545;
-}
 .error-message {
     color: #e74c3c;
     font-size: 14px;
