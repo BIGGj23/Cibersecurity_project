@@ -55,11 +55,12 @@
                 <div style="text-align: right; margin-bottom: 10px;">
                     <span class="close-button">×</span>
                 </div>
-                <h2>Criar Nova Turma</h2>
-                <form id="createClassForm">
-                    <label for="className">Nome da Turma</label>
-                    <input type="text" id="className" name="className">
-                    <button type="submit" class="btn-primary">Criar</button>
+                <h2>Entrar numa Turma</h2>
+                <form id="joinClassForm">
+                    <label for="classCode">Código da Turma</label>
+                    <input type="text" id="classCode" name="classCode" required>
+                    <p id="errorMessage" class="error-message"></p>
+                    <button type="submit" class="btn-primary">Entrar</button>
                 </form>
             </div>
         </div>
