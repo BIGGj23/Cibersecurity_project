@@ -23,12 +23,20 @@ Jogo.hasMany(PontuacaoJogo, { foreignKey: 'jogo_id', as: 'pontuacoes' });
 PontuacaoJogo.belongsTo(Utilizador, { foreignKey: 'aluno_id', as: 'utilizador' });
 PontuacaoJogo.belongsTo(Jogo, { foreignKey: 'jogo_id', as: 'jogo' });
 
+// Relação para permitir contagem de alunos por turma
+Turma.hasMany(TurmaAluno, { foreignKey: 'turma_id', as: 'inscricoes' });
+TurmaAluno.belongsTo(Turma, { foreignKey: 'turma_id' });
+
+
 // Exportar modelos e sequelize
+const SequelizeLib = require('sequelize');
+
 module.exports = {
     sequelize,
     Utilizador,
     Turma,
     Jogo,
     TurmaAluno,
-    PontuacaoJogo
+    PontuacaoJogo,
+    Sequelize: SequelizeLib
 };
