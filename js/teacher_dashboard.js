@@ -240,21 +240,18 @@ function loadMaterials() {
             id: "password",
             titulo: "Como criar uma password segura?",
             nivel: "Iniciante",
-            categoria: "Autenticação",
             descricao: "Aprende como criar uma password/senha segura."
         },
         {
             id: "phishing",
             titulo: "Como detetar um phishing?",
             nivel: "Iniciante",
-            categoria: "Engenharia Social",
             descricao: "Aprende a reconhecer e evitar ataques de phishing."
         },
         {
             id: "malware",
             titulo: "Como descobrir infecção um malware?",
             nivel: "Intermedio",
-            categoria: "Segurança de Sistemas",
             descricao: "Identifica sintomas e prevenção de infeções por malware."
         }
     ];
@@ -269,7 +266,6 @@ function loadMaterials() {
         card.innerHTML = `
             <h2>${mat.titulo}</h2>
             <span class="level ${nivelFormatado.classe}">${nivelFormatado.label}</span>
-            <p><strong>${mat.categoria}</strong></p>
             <p>${mat.descricao}</p>
             <button class="start-btn" data-material-id="${mat.id}">Vamos Aprender!</button>
         `;
